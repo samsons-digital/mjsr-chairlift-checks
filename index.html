@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MJSR Chairlift — Daily Operations Portal</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Barlow+Condensed:wght@400;500;600;700;800&family=Barlow:wght@300;400;500;600&display=swap');
+
+  :root {
+    --bg:        #f4f2ed;
+    --bg2:       #eae8e2;
+    --surface:   #ffffff;
+    --surface2:  #f9f8f5;
+    --border:    #dbd8d0;
+    --border2:   #c8c4ba;
+    --gold:      #b8902a;
+    --gold-lt:   #cca340;
+    --gold-dim:  rgba(184,144,42,0.10);
+    --text:      #1c1a17;
+    --text2:     #6a6158;
+    --text3:     #9e9486;
+    --green:     #2d7a45;
+    --green-dim: rgba(45,122,69,0.10);
+    --amber:     #c47a1a;
+    --amber-dim: rgba(196,122,26,0.10);
+    --red:       #b83030;
+    --red-dim:   rgba(184,48,48,0.10);
+    --blue:      #2258a0;
+    --blue-dim:  rgba(34,88,160,0.09);
+    --navy:      #1c2a40;
+  }
+
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: 'Barlow', sans-serif; min-height: 100vh; overflow-x: hidden; }
+  body::before { content:''; position:fixed; inset:0; background-image:radial-gradient(circle,rgba(184,144,42,0.09) 1px,transparent 1px); background-size:24px 24px; pointer-events:none; z-index:0; }
+
+  /* ── HEADER ── */
+  .header { position:relative; z-index:10; background:var(--navy); color:#fff; padding:0 28px; }
+  .header-inner { max-width:1140px; margin:0 auto; display:flex; align-items:stretch; justify-content:space-between; gap:16px; flex-wrap:wrap; min-height:72px; }
+  .header-left { display:flex; align-items:center; gap:14px; padding:16px 0; }
+  .header-logo { width:40px; height:40px; background:var(--gold); border-radius:7px; display:flex; align-items:center; justify-content:center; font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:16px; color:#fff; flex-shrink:0; }
+  .header-eyebrow { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--gold-lt); margin-bottom:2px; }
+  h1 { font-family:'Barlow Condensed',sans-serif; font-size:20px; font-weight:700; color:#fff; }
+  .header-right { display:flex; align-items:center; gap:8px; padding:16px 0; }
+  .status-pill { font-family:'DM Mono',monospace; font-size:10px; padding:5px 12px; border-radius:20px; border:1px solid rgba(255,255,255,0.15); color:rgba(255,255,255,0.55); }
+  #live-badge { font-family:'DM Mono',monospace; font-size:10px; font-weight:500; padding:5px 12px; border-radius:20px; background:rgba(45,122,69,0.25); color:#6ee89a; border:1px solid rgba(45,122,69,0.4); }
+
+  /* ── NAV TABS ── */
+  .tab-bar { position:relative; z-index:9; background:var(--surface); border-bottom:1px solid var(--border); padding:0 28px; }
+  .tab-bar-inner { max-width:1140px; margin:0 auto; display:flex; gap:0; }
+  .tab-btn { font-family:'DM Mono',monospace; font-size:11px; letter-spacing:1px; text-transform:uppercase; padding:14px 20px; border:none; background:transparent; color:var(--text3); cursor:pointer; border-bottom:2px solid transparent; transition:all 0.18s; white-space:nowrap; }
+  .tab-btn:hover { color:var(--text2); }
+  .tab-btn.active { color:var(--gold); border-bottom-color:var(--gold); }
+
+  /* ── MAIN ── */
+  .main { position:relative; z-index:1; max-width:1140px; margin:0 auto; padding:24px 24px 80px; }
+  .tab-pane { display:none; }
+  .tab-pane.active { display:block; }
+
+  /* ── TODAY BANNER ── */
+  .today-banner { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:18px 22px; margin-bottom:18px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px; box-shadow:0 1px 3px rgba(0,0,0,0.05); animation:up 0.3s ease both; }
+  .today-date { font-family:'Barlow Condensed',sans-serif; font-size:24px; font-weight:700; color:var(--text); }
+  .today-sub { font-family:'DM Mono',monospace; font-size:10px; color:var(--text3); margin-top:2px; }
+  .today-checks { display:flex; gap:10px; flex-wrap:wrap; }
+  .check-badge { display:flex; align-items:center; gap:8px; padding:7px 12px; border-radius:8px; border:1px solid var(--border); background:var(--surface2); }
+  .check-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; background:var(--border2); }
+  .dot-ok { background:var(--green); }
+  .dot-warn { background:var(--amber); }
+  .dot-none { background:var(--red); }
+  .check-lbl { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.5px; color:var(--text2); }
+  .check-val { font-family:'DM Mono',monospace; font-size:11px; font-weight:500; color:var(--text); }
+
+  /* ── ACTION BUTTONS ── */
+  .action-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:18px; animation:up 0.25s ease 0.05s both; }
+  .action-card { background:var(--navy); border-radius:12px; padding:18px 22px; text-decoration:none; display:flex; align-items:center; gap:14px; transition:opacity 0.18s,transform 0.18s; }
+  .action-card:hover { opacity:0.85; transform:translateY(-1px); }
+  .action-card.start { background:var(--green); }
+  .action-card.close { background:var(--blue); }
+  .action-icon { width:42px; height:42px; background:rgba(255,255,255,0.15); border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:19px; flex-shrink:0; }
+  .action-type { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:1.5px; text-transform:uppercase; color:rgba(255,255,255,0.6); margin-bottom:2px; }
+  .action-name { font-family:'Barlow Condensed',sans-serif; font-size:18px; font-weight:700; color:#fff; }
+
+  /* ── SECTION LABEL ── */
+  .section-label { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--text3); padding-bottom:9px; border-bottom:1px solid var(--border); margin-bottom:12px; }
+
+  /* ── METRICS ── */
+  .metrics-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(155px,1fr)); gap:10px; margin-bottom:18px; animation:up 0.25s ease 0.1s both; }
+  .metric-card { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:13px 15px; }
+  .metric-label { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:1px; text-transform:uppercase; color:var(--text3); margin-bottom:6px; line-height:1.4; }
+  .metric-value { font-family:'Barlow Condensed',sans-serif; font-size:28px; font-weight:700; color:var(--text); line-height:1; }
+  .metric-sub { font-family:'DM Mono',monospace; font-size:10px; color:var(--text3); margin-top:3px; }
+
+  /* ── TWO COL ── */
+  .two-col { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:18px; animation:up 0.25s ease 0.15s both; }
+
+  /* ── PANEL ── */
+  .panel { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px 18px; }
+
+  /* ── TABLES ── */
+  .chk-table, .maint-table { width:100%; border-collapse:collapse; }
+  .chk-table th, .maint-table th { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:1.5px; text-transform:uppercase; color:var(--text3); text-align:left; padding:5px 8px; border-bottom:1px solid var(--border); white-space:nowrap; }
+  .chk-table td, .maint-table td { font-family:'DM Mono',monospace; font-size:11px; color:var(--text2); padding:8px; border-bottom:1px solid rgba(0,0,0,0.04); vertical-align:middle; }
+  .chk-table tr:last-child td, .maint-table tr:last-child td { border-bottom:none; }
+  .td-ok { color:var(--green); font-weight:500; }
+  .td-warn { color:var(--amber); font-weight:500; }
+  .td-none { color:var(--red); font-weight:500; }
+  .ms { font-family:'DM Mono',monospace; font-size:9px; padding:3px 8px; border-radius:10px; white-space:nowrap; }
+  .ms-ok       { background:var(--green-dim); color:#1a5c30; border:1px solid rgba(45,122,69,0.2); }
+  .ms-soon     { background:var(--amber-dim); color:#7a4a08; border:1px solid rgba(196,122,26,0.25); }
+  .ms-overdue  { background:var(--red-dim);   color:#7a1818; border:1px solid rgba(184,48,48,0.25); }
+  .ms-manual   { background:var(--bg2); color:var(--text3); border:1px solid var(--border); }
+
+  /* ── QUICK LINKS ── */
+  .quick-links { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:18px; animation:up 0.25s ease 0.2s both; }
+  .ql-btn { background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:11px 13px; text-decoration:none; display:flex; align-items:center; gap:9px; transition:border-color 0.18s; }
+  .ql-btn:hover { border-color:var(--gold-lt); }
+  .ql-icon { width:30px; height:30px; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:14px; flex-shrink:0; }
+  .ql-label { font-family:'DM Mono',monospace; font-size:8px; letter-spacing:1.5px; text-transform:uppercase; color:var(--text3); }
+  .ql-name { font-size:12px; font-weight:600; color:var(--text); }
+
+  /* ── SHIMMER ── */
+  .shimmer { background:linear-gradient(90deg,var(--bg2) 25%,var(--border) 50%,var(--bg2) 75%); background-size:200% 100%; animation:shimmer 1.4s infinite; border-radius:4px; height:13px; margin:4px 0; }
+  @keyframes shimmer { 0%{background-position:200% 0;} 100%{background-position:-200% 0;} }
+  .err-msg { font-family:'DM Mono',monospace; font-size:11px; color:var(--red); padding:10px 12px; background:var(--red-dim); border-radius:6px; border-left:2px solid var(--red); }
+  .disc-bar { background:rgba(196,122,26,0.08); border:1px solid rgba(196,122,26,0.3); border-left:3px solid var(--amber); border-radius:6px; padding:9px 13px; font-family:'DM Mono',monospace; font-size:10px; color:#7a4a08; line-height:1.6; margin-bottom:12px; display:none; }
+
+  /* ═══════════════════════════════════════════════
+     MAINTENANCE AMENDMENT TAB
+  ═══════════════════════════════════════════════ */
+  .maint-amend { animation:up 0.3s ease both; }
+
+  /* PIN gate */
+  .pin-gate { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:36px; max-width:420px; margin:40px auto; text-align:center; box-shadow:0 2px 16px rgba(0,0,0,0.07); }
+  .pin-gate-icon { font-size:36px; margin-bottom:14px; }
+  .pin-gate-title { font-family:'Barlow Condensed',sans-serif; font-size:22px; font-weight:700; color:var(--text); margin-bottom:6px; }
+  .pin-gate-sub { font-family:'DM Mono',monospace; font-size:11px; color:var(--text3); margin-bottom:22px; line-height:1.6; }
+  .pin-input { width:160px; text-align:center; font-family:'DM Mono',monospace; font-size:22px; letter-spacing:8px; border:2px solid var(--border); border-radius:8px; padding:10px 14px; background:var(--bg); color:var(--text); outline:none; margin-bottom:12px; }
+  .pin-input:focus { border-color:var(--gold); }
+  .pin-error { font-family:'DM Mono',monospace; font-size:11px; color:var(--red); margin-bottom:10px; min-height:16px; }
+  .btn-primary { font-family:'DM Mono',monospace; font-size:11px; font-weight:500; letter-spacing:1px; text-transform:uppercase; padding:10px 24px; border-radius:7px; border:none; cursor:pointer; transition:all 0.18s; background:var(--navy); color:#fff; }
+  .btn-primary:hover { background:var(--gold); }
+  .btn-secondary { background:transparent; color:var(--text2); border:1px solid var(--border); font-family:'DM Mono',monospace; font-size:11px; padding:8px 16px; border-radius:7px; cursor:pointer; transition:all 0.18s; }
+  .btn-secondary:hover { border-color:var(--border2); color:var(--text); }
+  .btn-danger { background:var(--red-dim); color:var(--red); border:1px solid rgba(184,48,48,0.25); font-family:'DM Mono',monospace; font-size:11px; padding:8px 16px; border-radius:7px; cursor:pointer; }
+
+  /* Amendment panel */
+  .amend-panel { display:none; }
+  .amend-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; flex-wrap:wrap; gap:10px; }
+  .amend-title { font-family:'Barlow Condensed',sans-serif; font-size:22px; font-weight:700; color:var(--text); }
+  .amend-badge { font-family:'DM Mono',monospace; font-size:10px; padding:5px 12px; border-radius:20px; background:var(--green-dim); color:var(--green); border:1px solid rgba(45,122,69,0.25); }
+
+  /* Hours update card */
+  .hours-card { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:18px 20px; margin-bottom:16px; }
+  .hours-card-inner { display:flex; align-items:center; gap:16px; flex-wrap:wrap; }
+  .hours-display { flex:1; min-width:180px; }
+  .hours-label { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--text3); margin-bottom:4px; }
+  .hours-val { font-family:'Barlow Condensed',sans-serif; font-size:32px; font-weight:700; color:var(--text); }
+  .hours-sub { font-family:'DM Mono',monospace; font-size:10px; color:var(--text3); margin-top:2px; }
+  .hours-form { display:flex; gap:8px; align-items:flex-end; flex-wrap:wrap; }
+  .field-group { display:flex; flex-direction:column; gap:4px; }
+  .field-label { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:1.5px; text-transform:uppercase; color:var(--text3); }
+  .field-input { font-family:'DM Mono',monospace; font-size:13px; border:1px solid var(--border); border-radius:7px; padding:8px 12px; background:var(--bg); color:var(--text); outline:none; transition:border-color 0.18s; width:140px; }
+  .field-input:focus { border-color:var(--gold); }
+  .field-input.wide { width:220px; }
+  .field-input.full { width:100%; }
+  .field-select { font-family:'DM Mono',monospace; font-size:12px; border:1px solid var(--border); border-radius:7px; padding:8px 12px; background:var(--bg); color:var(--text); outline:none; width:100%; }
+  .field-select:focus { border-color:var(--gold); }
+  textarea.field-input { resize:vertical; min-height:72px; }
+
+  /* Task completion cards */
+  .task-grid { display:grid; gap:12px; }
+  .task-card { background:var(--surface); border:1px solid var(--border); border-radius:12px; overflow:hidden; transition:border-color 0.2s; }
+  .task-card:hover { border-color:var(--border2); }
+  .task-card.expanded { border-color:var(--gold-lt); }
+  .task-card-head { display:flex; align-items:center; gap:12px; padding:14px 18px; cursor:pointer; }
+  .task-status-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+  .task-info { flex:1; min-width:0; }
+  .task-name { font-size:13px; font-weight:600; color:var(--text); }
+  .task-meta { font-family:'DM Mono',monospace; font-size:10px; color:var(--text3); margin-top:2px; }
+  .task-actions { display:flex; align-items:center; gap:8px; }
+  .task-body { display:none; padding:0 18px 18px; border-top:1px solid var(--border); }
+  .task-card.expanded .task-body { display:block; }
+  .completion-form { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:14px; }
+  .completion-form .span2 { grid-column:span 2; }
+
+  /* Success / error toasts */
+  .toast { position:fixed; bottom:24px; right:24px; z-index:999; font-family:'DM Mono',monospace; font-size:12px; padding:12px 18px; border-radius:9px; box-shadow:0 4px 20px rgba(0,0,0,0.15); display:none; max-width:340px; line-height:1.5; animation:slideUp 0.25s ease; }
+  .toast.success { background:var(--green); color:#fff; }
+  .toast.error   { background:var(--red); color:#fff; }
+  @keyframes slideUp { from{opacity:0;transform:translateY(12px);} to{opacity:1;transform:translateY(0);} }
+
+  /* Inline alert boxes */
+  .alert-box { border-radius:8px; padding:11px 14px; font-family:'DM Mono',monospace; font-size:11px; line-height:1.7; margin-top:10px; display:none; }
+  .alert-box.success { background:var(--green-dim); color:#1a5c30; border:1px solid rgba(45,122,69,0.3); }
+  .alert-box.error   { background:var(--red-dim);   color:#7a1818; border:1px solid rgba(184,48,48,0.3); }
+
+  /* ── SCRIPT URL warning ── */
+  .script-notice { background:var(--amber-dim); border:1px solid rgba(196,122,26,0.3); border-left:3px solid var(--amber); border-radius:7px; padding:12px 14px; font-family:'DM Mono',monospace; font-size:10px; color:#7a4a08; line-height:1.7; margin-bottom:16px; }
+
+  /* Footer */
+  footer { margin-top:40px; padding-top:16px; border-top:1px solid var(--border); font-family:'DM Mono',monospace; font-size:10px; color:var(--text3); display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; }
+
+  @keyframes up { from{opacity:0;transform:translateY(8px);} to{opacity:1;transform:translateY(0);} }
+  @media(max-width:680px) { .two-col,.action-row,.quick-links,.completion-form { grid-template-columns:1fr; } .completion-form .span2 { grid-column:span 1; } }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-inner">
+    <div class="header-left">
+      <div class="header-logo">MJ</div>
+      <div>
+        <div class="header-eyebrow">Malam Jabba Ski Resort</div>
+        <h1>Chairlift Daily Operations Portal</h1>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="status-pill" id="last-updated">Loading...</div>
+      <div id="live-badge">● LIVE</div>
+    </div>
+  </div>
+</div>
+
+<!-- TAB BAR -->
+<div class="tab-bar">
+  <div class="tab-bar-inner">
+    <button class="tab-btn active" onclick="switchTab('dashboard')">📊 Dashboard</button>
+    <button class="tab-btn" onclick="switchTab('maintenance')">🔧 Maintenance Schedule</button>
+    <button class="tab-btn" onclick="switchTab('amendment')">✏️ Amend Schedule</button>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- ══════════════════════════════════════
+       TAB 1 — DASHBOARD
+  ══════════════════════════════════════ -->
+  <div class="tab-pane active" id="tab-dashboard">
+
+    <div class="today-banner">
+      <div>
+        <div class="today-date" id="today-date">—</div>
+        <div class="today-sub">Today's Operational Status</div>
+      </div>
+      <div class="today-checks">
+        <div class="check-badge"><div class="check-dot" id="sd-dot"></div><div><div class="check-lbl">START CHECK</div><div class="check-val" id="sd-status">Loading...</div></div></div>
+        <div class="check-badge"><div class="check-dot" id="cd-dot"></div><div><div class="check-lbl">CLOSE CHECK</div><div class="check-val" id="cd-status">Loading...</div></div></div>
+        <div class="check-badge"><div class="check-dot" id="px-dot"></div><div><div class="check-lbl">PASSENGERS</div><div class="check-val" id="px-today">Loading...</div></div></div>
+      </div>
+    </div>
+
+    <div class="action-row">
+      <a class="action-card start" href="https://docs.google.com/forms/d/1_RJN50dutBkIPHCM_PojlI5GJX1Ree8vNlLQDQINFsQ/viewform" target="_blank">
+        <div class="action-icon">🌅</div>
+        <div><div class="action-type">Morning</div><div class="action-name">Start of Day Check</div></div>
+      </a>
+      <a class="action-card close" href="https://docs.google.com/forms/d/1SqlxXNSG-hKCgYRmN_rKvxSlHIU7pPJNittFjtvqhVg/viewform" target="_blank">
+        <div class="action-icon">🌆</div>
+        <div><div class="action-type">Evening</div><div class="action-name">End of Day Check</div></div>
+      </a>
+    </div>
+
+    <div class="section-label">All-Time Key Metrics</div>
+    <div class="metrics-grid">
+      <div class="metric-card"><div class="metric-label">Total Start Checks</div><div class="metric-value" id="m-st">—</div><div class="metric-sub">all time</div></div>
+      <div class="metric-card"><div class="metric-label">Total Close Checks</div><div class="metric-value" id="m-cl">—</div><div class="metric-sub">all time</div></div>
+      <div class="metric-card"><div class="metric-label">Operating Days</div><div class="metric-value" id="m-od">—</div><div class="metric-sub">all time</div></div>
+      <div class="metric-card"><div class="metric-label">Start Checks Last 30 Days</div><div class="metric-value" id="m-s30">—</div><div class="metric-sub">last 30 days</div></div>
+      <div class="metric-card"><div class="metric-label">Close Checks Last 30 Days</div><div class="metric-value" id="m-c30">—</div><div class="metric-sub">last 30 days</div></div>
+      <div class="metric-card"><div class="metric-label">Interruptions Last 30 Days</div><div class="metric-value" id="m-int">—</div><div class="metric-sub">last 30 days</div></div>
+    </div>
+
+    <div class="two-col">
+      <div class="panel">
+        <div class="section-label">Recent Checks — Last 10 Days</div>
+        <div id="recent-wrap"><div class="shimmer" style="width:100%"></div><div class="shimmer" style="width:80%"></div></div>
+      </div>
+      <div class="panel">
+        <div class="section-label">Maintenance — Pending &amp; Upcoming</div>
+        <div id="disc-bar" class="disc-bar"></div>
+        <div id="maint-dash-wrap"><div class="shimmer" style="width:100%"></div><div class="shimmer" style="width:85%"></div></div>
+      </div>
+    </div>
+
+    <div class="section-label">Quick Access</div>
+    <div class="quick-links">
+      <a class="ql-btn" href="https://docs.google.com/spreadsheets/d/1ZY5wLqQqxtK8OWgeGpd5naZyW4MbGrbAR7Bj63bF6iA/edit" target="_blank"><div class="ql-icon" style="background:rgba(45,122,69,0.1)">📊</div><div><div class="ql-label">Google Sheet</div><div class="ql-name">Master Data Sheet</div></div></a>
+      <a class="ql-btn" href="https://docs.google.com/spreadsheets/d/1ZY5wLqQqxtK8OWgeGpd5naZyW4MbGrbAR7Bj63bF6iA/edit" target="_blank"><div class="ql-icon" style="background:rgba(184,144,42,0.1)">🔧</div><div><div class="ql-label">Maintenance</div><div class="ql-name">Maintenance Config Tab</div></div></a>
+      <a class="ql-btn" href="https://docs.google.com/spreadsheets/d/1ZY5wLqQqxtK8OWgeGpd5naZyW4MbGrbAR7Bj63bF6iA/edit" target="_blank"><div class="ql-icon" style="background:rgba(34,88,160,0.09)">📋</div><div><div class="ql-label">Combined Log</div><div class="ql-name">Combined Start Master</div></div></a>
+      <a class="ql-btn" href="https://docs.google.com/spreadsheets/d/1ZY5wLqQqxtK8OWgeGpd5naZyW4MbGrbAR7Bj63bF6iA/edit" target="_blank"><div class="ql-icon" style="background:rgba(184,48,48,0.09)">🚨</div><div><div class="ql-label">Alerts</div><div class="ql-name">Maintenance Alerts Log</div></div></a>
+    </div>
+
+    <footer>
+      <span>MJSR Chairlift Daily Operations Portal v2.0 // April 2026</span>
+      <span>Sheet: 1ZY5wLqQqxtK8OWgeGpd5naZyW4MbGrbAR7Bj63bF6iA</span>
+    </footer>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       TAB 2 — MAINTENANCE SCHEDULE (read-only view)
+  ══════════════════════════════════════ -->
+  <div class="tab-pane" id="tab-maintenance">
+    <div style="animation:up 0.3s ease both;">
+      <div class="section-label" style="margin-top:4px">Maintenance Schedule — All Tasks</div>
+      <div class="panel">
+        <div id="disc-bar2" class="disc-bar"></div>
+        <div id="maint-full-wrap"><div class="shimmer" style="width:100%"></div><div class="shimmer" style="width:85%"></div><div class="shimmer" style="width:90%"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       TAB 3 — AMEND SCHEDULE (PIN protected)
+  ══════════════════════════════════════ -->
+  <div class="tab-pane" id="tab-amendment">
+    <div class="maint-amend">
+
+      <!-- PIN GATE -->
+      <div class="pin-gate" id="pin-gate">
+        <div class="pin-gate-icon">🔒</div>
+        <div class="pin-gate-title">SNR Tech Manager Access</div>
+        <div class="pin-gate-sub">Enter your PIN to access the<br>Maintenance Amendment panel.</div>
+        <div><input type="password" class="pin-input" id="pin-input" maxlength="6" placeholder="····" onkeydown="if(event.key==='Enter')checkPin()"></div>
+        <div class="pin-error" id="pin-error"></div>
+        <button class="btn-primary" onclick="checkPin()">Unlock →</button>
+      </div>
+
+      <!-- AMENDMENT PANEL (hidden until PIN) -->
+      <div class="amend-panel" id="amend-panel">
+
+        <div class="amend-header">
+          <div>
+            <div class="amend-title">Maintenance Schedule Amendment</div>
+            <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);margin-top:3px;">SNR Technical Manager — Authorised Access</div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <div class="amend-badge">● Unlocked</div>
+            <button class="btn-secondary" onclick="lockPanel()">🔒 Lock</button>
+          </div>
+        </div>
+
+        <!-- Apps Script URL notice -->
+        <div class="script-notice" id="script-notice">
+          <strong>⚠ Setup required:</strong> To enable live amendments, paste your Apps Script web app URL below and click Save. The URL looks like:<br>
+          <code>https://script.google.com/macros/s/AKfycb.../exec</code><br>
+          This is the same script already deployed for your chairlift system. Deploy it as a web app (Execute as: Me, Who has access: Anyone) and paste the URL here.
+          <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;">
+            <input type="text" id="script-url-input" class="field-input" style="width:400px;max-width:100%" placeholder="https://script.google.com/macros/s/.../exec">
+            <button class="btn-primary" onclick="saveScriptUrl()">Save URL</button>
+            <button class="btn-secondary" onclick="dismissNotice()">Dismiss</button>
+          </div>
+        </div>
+
+        <!-- HOURS COUNTER UPDATE -->
+        <div class="hours-card">
+          <div class="section-label">Master Hours Counter (Cell R1)</div>
+          <div class="hours-card-inner">
+            <div class="hours-display">
+              <div class="hours-label">Current Value</div>
+              <div class="hours-val" id="current-hrs-display">—</div>
+              <div class="hours-sub">Read from Maintenance_Config R1</div>
+            </div>
+            <div class="hours-form">
+              <div class="field-group">
+                <div class="field-label">New Meter Reading</div>
+                <input type="number" class="field-input" id="new-hrs-input" placeholder="e.g. 20350" min="1">
+              </div>
+              <button class="btn-primary" onclick="updateHoursCounter()">Update Counter</button>
+            </div>
+          </div>
+          <div class="alert-box" id="hrs-alert"></div>
+        </div>
+
+        <!-- TASK COMPLETION -->
+        <div class="section-label">Mark Maintenance Task as Complete</div>
+        <div id="task-grid" class="task-grid">
+          <div class="shimmer" style="height:56px;border-radius:12px;"></div>
+          <div class="shimmer" style="height:56px;border-radius:12px;"></div>
+          <div class="shimmer" style="height:56px;border-radius:12px;"></div>
+        </div>
+
+      </div><!-- end amend-panel -->
+    </div>
+  </div><!-- end tab-amendment -->
+
+</div><!-- end main -->
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════════
+//  CONFIG
+// ═══════════════════════════════════════════════
+const SHEET_ID = '1ZY5wLqQqxtK8OWgeGpd5naZyW4MbGrbAR7Bj63bF6iA';
+const PIN      = '1234';
+
+const TASKS = [
+  { row:3,  name:"Base Bull Wheel Bearing / Grease",                               action:"Grease",          interval:500  },
+  { row:4,  name:"Top Bull Wheel Bearing / Grease",                                action:"Grease",          interval:500  },
+  { row:5,  name:"Main Motor / Universal Shaft",                                   action:"Grease",          interval:500  },
+  { row:6,  name:"Gear Box / Universal Shaft",                                     action:"Grease",          interval:500  },
+  { row:7,  name:"Grip Hangers Movement",                                          action:"Move Hangers",    interval:500  },
+  { row:8,  name:"Greasing of Hanger Grips",                                       action:"Grease",          interval:500  },
+  { row:9,  name:"Greasing of Towers & Assemblies (Bushes, Pins, Axles, Nipples)", action:"Grease",          interval:1000 },
+  { row:10, name:"Service Brake / Motor Bearings & Service",                       action:"Grease",          interval:1000 },
+  { row:11, name:"Brake Motor Bearings & Service",                                 action:"Lubricate",       interval:3000 },
+  { row:12, name:"Hydraulic Oil (Tension & Brake)",                                action:"Change Oil",      interval:3000 },
+  { row:13, name:"Main Gear Box Oil Replacement",                                  action:"Change Oil",      interval:3000 },
+  { row:14, name:"Auxiliary Gear Box Oil Replacement",                             action:"Change Oil",      interval:3000 },
+  { row:15, name:"N.D.T of Rope and All Tests",                                    action:"Full Inspection", interval:null }
+];
+
+// ═══════════════════════════════════════════════
+//  HELPERS
+// ═══════════════════════════════════════════════
+function today() {
+  return new Date().toLocaleDateString('en-GB', {weekday:'long',day:'numeric',month:'long',year:'numeric'});
+}
+function todayISO() {
+  return new Date().toISOString().slice(0,10);
+}
+function fmt(raw) {
+  if (!raw) return '—';
+  const d = new Date(raw);
+  return isNaN(d) ? raw : d.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
+}
+async function fetchCSV(gid) {
+  const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${gid}`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error('Fetch failed gid='+gid);
+  return parseCSV(await res.text());
+}
+function parseCSV(text) {
+  return text.split('\n').map(line => {
+    const result = []; let cur = '', inQ = false;
+    for (const c of line) {
+      if (c==='"') inQ=!inQ;
+      else if (c===',' && !inQ) { result.push(cur.trim()); cur=''; }
+      else cur+=c;
+    }
+    result.push(cur.trim());
+    return result;
+  }).filter(r => r.some(c=>c));
+}
+function toast(msg, type='success', ms=4000) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = 'toast ' + type;
+  el.style.display = 'block';
+  setTimeout(() => el.style.display='none', ms);
+}
+function setAlert(id, msg, type) {
+  const el = document.getElementById(id);
+  el.textContent = msg;
+  el.className = 'alert-box ' + type;
+  el.style.display = msg ? 'block' : 'none';
+}
+
+// ═══════════════════════════════════════════════
+//  TABS
+// ═══════════════════════════════════════════════
+function switchTab(name) {
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  event.currentTarget.classList.add('active');
+  if (name==='maintenance' && !maintFullLoaded) loadMaintFull();
+  if (name==='amendment' && amendUnlocked && !taskCardsBuilt) buildTaskCards();
+}
+
+// ═══════════════════════════════════════════════
+//  DASHBOARD DATA
+// ═══════════════════════════════════════════════
+document.getElementById('today-date').textContent = today();
+
+async function loadDashboard() {
+  try {
+    const [startRows, closeRows] = await Promise.all([fetchCSV('0'), fetchCSV('1')]);
+
+    // Find headers
+    const sHdr = startRows.find(r => r.some(c => c.toLowerCase().includes('timestamp')));
+    const cHdr = closeRows.find(r => r.some(c => c.toLowerCase().includes('timestamp')));
+    const sData = startRows.slice(startRows.indexOf(sHdr)+1).filter(r=>r[1]&&r[1].trim());
+    const cData = closeRows.slice(closeRows.indexOf(cHdr)+1).filter(r=>r[1]&&r[1].trim());
+
+    const td = todayISO();
+    const todayStart = sData.find(r => { const d=new Date(r[1]); return !isNaN(d)&&d.toISOString().slice(0,10)===td; });
+    const todayClose = cData.find(r => { const d=new Date(r[1]); return !isNaN(d)&&d.toISOString().slice(0,10)===td; });
+
+    // Start status
+    const sdDot=document.getElementById('sd-dot'), sdSt=document.getElementById('sd-status');
+    if (todayStart) { sdDot.className='check-dot dot-ok'; sdSt.textContent='✓ Submitted'; sdSt.style.color='var(--green)'; }
+    else { sdDot.className='check-dot dot-none'; sdSt.textContent='⚠ Not Yet'; sdSt.style.color='var(--amber)'; }
+
+    // Close status
+    const cdDot=document.getElementById('cd-dot'), cdSt=document.getElementById('cd-status');
+    if (todayClose) { cdDot.className='check-dot dot-ok'; cdSt.textContent='✓ Submitted'; cdSt.style.color='var(--green)'; }
+    else { cdDot.className='check-dot'; cdSt.textContent='— Pending'; }
+
+    // Passengers
+    const pxDot=document.getElementById('px-dot'), pxEl=document.getElementById('px-today');
+    if (todayClose && cHdr) {
+      const upIdx = cHdr.findIndex(h=>h.toLowerCase().includes('upward')||h.toLowerCase().includes('passengers up'));
+      const up = upIdx>=0 ? parseInt(todayClose[upIdx])||0 : 0;
+      const dn = upIdx>=0 ? parseInt(todayClose[upIdx+1])||0 : 0;
+      const tot = up+dn;
+      pxEl.textContent = tot>0 ? tot.toLocaleString() : '—';
+      pxDot.className = tot>0 ? 'check-dot dot-ok' : 'check-dot';
+    } else { pxDot.className='check-dot'; pxEl.textContent='—'; }
+
+    // Metrics
+    document.getElementById('m-st').textContent = sData.length;
+    document.getElementById('m-cl').textContent = cData.length;
+    const uDates = new Set(sData.map(r=>{const d=new Date(r[1]);return isNaN(d)?null:d.toISOString().slice(0,10);}).filter(Boolean));
+    document.getElementById('m-od').textContent = uDates.size;
+    const cut = new Date(); cut.setDate(cut.getDate()-30);
+    document.getElementById('m-s30').textContent = sData.filter(r=>new Date(r[1])>=cut).length;
+    document.getElementById('m-c30').textContent = cData.filter(r=>new Date(r[1])>=cut).length;
+    const cHdrArr = cHdr||[];
+    const intrIdx = cHdrArr.findIndex(h=>h.toLowerCase().includes('interruption')&&!h.toLowerCase().includes('duration')&&!h.toLowerCase().includes('reason'));
+    let ints=0;
+    cData.filter(r=>new Date(r[1])>=cut).forEach(r=>{ if(intrIdx>=0&&r[intrIdx]&&r[intrIdx].toLowerCase()==='yes') ints++; });
+    document.getElementById('m-int').textContent = ints;
+
+    // Recent checks table
+    const allDates = new Set();
+    [...sData,...cData].forEach(r=>{const d=new Date(r[1]);if(!isNaN(d))allDates.add(d.toISOString().slice(0,10));});
+    const sorted = [...allDates].sort((a,b)=>b.localeCompare(a)).slice(0,10);
+    const opIdx = sHdr ? sHdr.findIndex(h=>h.toLowerCase().includes('operator name')&&!h.toLowerCase().includes('senior')&&!h.toLowerCase().includes('electrical')) : 4;
+    const rows = sorted.map(ds => {
+      const s = sData.find(r=>{const d=new Date(r[1]);return !isNaN(d)&&d.toISOString().slice(0,10)===ds;});
+      const c = cData.find(r=>{const d=new Date(r[1]);return !isNaN(d)&&d.toISOString().slice(0,10)===ds;});
+      const op = s&&opIdx>=0?s[opIdx]:(c&&4<c.length?c[4]:'—');
+      return {date:ds,hasStart:!!s,hasClose:!!c,op};
+    });
+    document.getElementById('recent-wrap').innerHTML =
+      `<table class="chk-table"><thead><tr><th>Date</th><th>Operator</th><th>Start</th><th>Close</th></tr></thead><tbody>` +
+      rows.map(r=>`<tr><td>${fmt(r.date)}</td><td>${r.op&&r.op.length>16?r.op.slice(0,15)+'…':(r.op||'—')}</td><td class="${r.hasStart?'td-ok':'td-none'}">${r.hasStart?'✓':'✗'}</td><td class="${r.hasClose?'td-ok':'td-warn'}">${r.hasClose?'✓':'—'}</td></tr>`).join('') +
+      `</tbody></table>`;
+
+    document.getElementById('last-updated').textContent = 'Updated: '+new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+  } catch(e) {
+    console.error('Dashboard error', e);
+    document.getElementById('recent-wrap').innerHTML = `<div class="err-msg">Could not load data. Ensure the sheet is shared publicly (Viewer).</div>`;
+  }
+}
+
+// ═══════════════════════════════════════════════
+//  MAINTENANCE DATA (shared between tabs)
+// ═══════════════════════════════════════════════
+let maintData = null;
+let maintFullLoaded = false;
+
+async function loadMaintData() {
+  try {
+    // Maintenance_Config is one of the known gids — try fetching by name via gid
+    // From the script, Maintenance_Config is tab 9 in the desired order
+    // We'll try multiple known gids
+    let rows = null;
+    const gidsToTry = ['532107903','2','1540842484'];
+    for (const gid of gidsToTry) {
+      try {
+        const r = await fetchCSV(gid);
+        const hasTask = r.some(row => row.some(c=>c&&c.includes('Bull Wheel')));
+        if (hasTask) { rows = r; break; }
+      } catch(e) {}
+    }
+    if (!rows) throw new Error('Maintenance_Config not found');
+
+    const hdrRow = rows.find(r => r.some(c=>c.toLowerCase&&c.toLowerCase().includes('task name')));
+    if (!hdrRow) throw new Error('Header not found');
+    const hi = rows.indexOf(hdrRow);
+    const data = rows.slice(hi+1).filter(r=>r[1]&&r[1].trim());
+
+    // Current hours from R1 - look for a row with a large number near top
+    let currentHrs = '—';
+    for (let i=0; i<Math.min(hi,5); i++) {
+      for (const cell of rows[i]) {
+        const n = parseFloat(cell);
+        if (!isNaN(n) && n > 10000) { currentHrs = n; break; }
+      }
+      if (currentHrs !== '—') break;
+    }
+
+    // Check discrepancy warning
+    const discRow = rows.find(r=>r.some(c=>c&&c.toString().toLowerCase().includes('discrepancy')));
+
+    maintData = {
+      tasks: data.map(r => ({
+        task:      r[1]||'—',
+        action:    r[2]||'—',
+        interval:  r[3]||'—',
+        lastHrs:   r[4]||'—',
+        lastDate:  r[5]||'',
+        lastBy:    r[6]||'—',
+        dueAt:     r[7]||'—',
+        hrsRemain: r[9]||'—',
+        estDays:   r[10]||'—',
+        status:    r[11]||'—',
+        notes:     r[12]||''
+      })),
+      currentHrs,
+      discrepancy: discRow ? discRow.join(' ') : null
+    };
+
+    return maintData;
+  } catch(e) {
+    console.error('Maint data error', e);
+    return null;
+  }
+}
+
+function statusClass(s) {
+  if (!s) return 'ms-ok';
+  if (s.includes('OVERDUE')) return 'ms-overdue';
+  if (s.includes('DUE SOON')||s.includes('DUE')) return 'ms-soon';
+  if (s.includes('manual')) return 'ms-manual';
+  return 'ms-ok';
+}
+function statusLabel(s) {
+  if (!s) return '✓ OK';
+  if (s.includes('OVERDUE')) return '⚠ OVERDUE';
+  if (s.includes('DUE SOON')||s.includes('DUE')) return '⚡ DUE SOON';
+  if (s.includes('manual')) return '📋 MANUAL';
+  return '✓ OK';
+}
+function dotColor(s) {
+  if (!s) return 'var(--green)';
+  if (s.includes('OVERDUE')) return 'var(--red)';
+  if (s.includes('DUE')) return 'var(--amber)';
+  if (s.includes('manual')) return 'var(--text3)';
+  return 'var(--green)';
+}
+
+async function loadMaintDash() {
+  const data = await loadMaintData();
+  const wrap = document.getElementById('maint-dash-wrap');
+  const disc = document.getElementById('disc-bar');
+  if (!data) { wrap.innerHTML=`<div class="err-msg">Could not load maintenance data.</div>`; return; }
+
+  if (data.discrepancy) { disc.style.display='block'; disc.innerHTML=`<strong>⚠ Hours Discrepancy detected.</strong> Update Maintenance_Config cell R1 with the verified physical meter reading.`; }
+
+  // Show only non-OK tasks in dashboard widget
+  const flagged = data.tasks.filter(t => !t.status.includes('OK') || t.status.includes('OVERDUE') || t.status.includes('DUE'));
+  const show = flagged.length > 0 ? flagged : data.tasks.slice(0, 6);
+
+  wrap.innerHTML = `<table class="maint-table"><thead><tr><th>Task</th><th>Due At</th><th>Remaining</th><th>Status</th></tr></thead><tbody>` +
+    show.map(t=>`<tr><td style="color:var(--text);font-weight:500">${t.task.length>28?t.task.slice(0,27)+'…':t.task}</td><td>${t.dueAt==='Schedule manually'?'—':t.dueAt}</td><td>${t.hrsRemain==='—'?'—':t.hrsRemain+' hrs'}</td><td><span class="ms ${statusClass(t.status)}">${statusLabel(t.status)}</span></td></tr>`).join('') +
+    `</tbody></table>` +
+    (flagged.length===0?`<div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--green);margin-top:10px;">✓ All tasks within schedule.</div>`:'');
+}
+
+async function loadMaintFull() {
+  maintFullLoaded = true;
+  const data = maintData || await loadMaintData();
+  const wrap = document.getElementById('maint-full-wrap');
+  const disc = document.getElementById('disc-bar2');
+  if (!data) { wrap.innerHTML=`<div class="err-msg">Could not load maintenance data.</div>`; return; }
+
+  if (data.discrepancy) { disc.style.display='block'; disc.innerHTML=`<strong>⚠ Hours Discrepancy:</strong> Update Maintenance_Config cell R1 with the verified physical meter reading.`; }
+
+  // Sort: overdue first, then due soon, then ok
+  const order = t => t.status.includes('OVERDUE')?0:t.status.includes('DUE')?1:t.status.includes('manual')?3:2;
+  const sorted = [...data.tasks].sort((a,b)=>order(a)-order(b));
+
+  wrap.innerHTML = `
+    <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);margin-bottom:12px;">
+      Master hours counter: <strong style="color:var(--text)">${data.currentHrs} hrs</strong>
+      &nbsp;·&nbsp; Total tasks tracked: <strong style="color:var(--text)">${data.tasks.length}</strong>
+    </div>
+    <table class="maint-table" style="font-size:11px;">
+      <thead><tr>
+        <th>Task</th><th>Action</th><th>Interval</th>
+        <th>Last Done (hrs)</th><th>Last Date</th><th>By</th>
+        <th>Due At</th><th>Hrs Remaining</th><th>Est. Days</th><th>Status</th>
+      </tr></thead><tbody>` +
+    sorted.map(t=>`<tr>
+      <td style="color:var(--text);font-weight:600;min-width:200px">${t.task}</td>
+      <td>${t.action}</td>
+      <td style="text-align:center">${t.interval==='—'?'—':t.interval+' hrs'}</td>
+      <td style="text-align:center">${t.lastHrs}</td>
+      <td>${t.lastDate?fmt(t.lastDate):'—'}</td>
+      <td>${t.lastBy}</td>
+      <td style="text-align:center">${t.dueAt==='Schedule manually'?'—':t.dueAt}</td>
+      <td style="text-align:center;font-weight:500">${t.hrsRemain==='—'?'—':t.hrsRemain+' hrs'}</td>
+      <td style="text-align:center">${t.estDays==='—'?'—':t.estDays+' days'}</td>
+      <td><span class="ms ${statusClass(t.status)}">${statusLabel(t.status)}</span></td>
+    </tr>`).join('') +
+    `</tbody></table>`;
+}
+
+// ═══════════════════════════════════════════════
+//  PIN + AMENDMENT PANEL
+// ═══════════════════════════════════════════════
+let amendUnlocked = false;
+let taskCardsBuilt = false;
+let scriptUrl = 'https://script.google.com/macros/s/AKfycbx6pT2xPiXZ4ZPK2G_ipRYVoMdWvTYO9aWiO2q75PIea1UZQCGKjXB1hOfXiArzVlC7qw/exec';
+
+function checkPin() {
+  const val = document.getElementById('pin-input').value;
+  if (val === PIN) {
+    amendUnlocked = true;
+    document.getElementById('pin-gate').style.display = 'none';
+    document.getElementById('amend-panel').style.display = 'block';
+
+    // Load data and build panel
+    loadAmendPanel();
+
+    // Script URL is hardcoded — hide notice
+    document.getElementById('script-notice').style.display = 'none';
+  } else {
+    document.getElementById('pin-error').textContent = 'Incorrect PIN. Please try again.';
+    document.getElementById('pin-input').value = '';
+    document.getElementById('pin-input').focus();
+  }
+}
+
+function lockPanel() {
+  amendUnlocked = false;
+  taskCardsBuilt = false;
+  document.getElementById('amend-panel').style.display = 'none';
+  document.getElementById('pin-gate').style.display = 'block';
+  document.getElementById('pin-input').value = '';
+  document.getElementById('pin-error').textContent = '';
+}
+
+function saveScriptUrl() {
+  const url = document.getElementById('script-url-input').value.trim();
+  if (!url.startsWith('https://script.google.com')) {
+    toast('Please enter a valid Apps Script URL.', 'error'); return;
+  }
+  scriptUrl = url;
+  localStorage.setItem('mjsr_chairlift_script_url', url);
+  document.getElementById('script-notice').style.display = 'none';
+  toast('✓ Script URL saved. Amendments are now live.');
+}
+
+function dismissNotice() {
+  document.getElementById('script-notice').style.display = 'none';
+}
+
+async function loadAmendPanel() {
+  const data = maintData || await loadMaintData();
+  if (data) {
+    document.getElementById('current-hrs-display').textContent = data.currentHrs !== '—' ? data.currentHrs.toLocaleString() + ' hrs' : '—';
+  }
+  if (!taskCardsBuilt) buildTaskCards();
+}
+
+function buildTaskCards() {
+  taskCardsBuilt = true;
+  const grid = document.getElementById('task-grid');
+  grid.innerHTML = '';
+
+  TASKS.forEach((t, i) => {
+    const liveTask = maintData ? maintData.tasks.find(d=>d.task===t.name) : null;
+    const status   = liveTask ? liveTask.status : '—';
+    const lastHrs  = liveTask ? liveTask.lastHrs : '—';
+    const lastDate = liveTask ? (liveTask.lastDate ? fmt(liveTask.lastDate) : '—') : '—';
+    const lastBy   = liveTask ? liveTask.lastBy : '—';
+    const dc = dotColor(status);
+
+    const card = document.createElement('div');
+    card.className = 'task-card';
+    card.id = 'tcard-'+i;
+    card.innerHTML = `
+      <div class="task-card-head" onclick="toggleTask(${i})">
+        <div class="task-status-dot" style="background:${dc}"></div>
+        <div class="task-info">
+          <div class="task-name">${t.name}</div>
+          <div class="task-meta">${t.action} · Every ${t.interval?t.interval+' hrs':'—'} · Last done: ${lastHrs} hrs (${lastDate}) by ${lastBy}</div>
+        </div>
+        <div class="task-actions">
+          <span class="ms ${statusClass(status)}">${statusLabel(status)}</span>
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="color:var(--text3);flex-shrink:0"><path d="m6 9 6 6 6-6"/></svg>
+        </div>
+      </div>
+      <div class="task-body" id="tbody-${i}">
+        <div class="completion-form">
+          <div class="field-group">
+            <div class="field-label">Hours Counter at Completion *</div>
+            <input type="number" class="field-input" id="f-hrs-${i}" placeholder="e.g. 20350" min="1">
+          </div>
+          <div class="field-group">
+            <div class="field-label">Date Completed *</div>
+            <input type="date" class="field-input" id="f-date-${i}" value="${todayISO()}">
+          </div>
+          <div class="field-group">
+            <div class="field-label">Completed By *</div>
+            <input type="text" class="field-input" id="f-by-${i}" placeholder="e.g. Engr Akram Khan">
+          </div>
+          <div class="field-group">
+            <div class="field-label">Update Master Hours Counter?</div>
+            <select class="field-select" id="f-upd-${i}">
+              <option value="yes">Yes — update R1 to this reading</option>
+              <option value="no">No — keep current R1 value</option>
+            </select>
+          </div>
+          <div class="field-group span2">
+            <div class="field-label">Notes / Description of Work *</div>
+            <textarea class="field-input full" id="f-notes-${i}" rows="3" placeholder="Describe what was done, condition observed, parts replaced, anything notable..."></textarea>
+          </div>
+          <div class="span2" style="display:flex;gap:8px;align-items:center;">
+            <button class="btn-primary" onclick="saveCompletion(${i},'${t.name.replace(/'/g,"\\'")}',${t.row})">Save Completion Record</button>
+            <button class="btn-secondary" onclick="toggleTask(${i})">Cancel</button>
+            <span id="f-saving-${i}" style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);display:none">⏳ Saving...</span>
+          </div>
+          <div class="span2"><div class="alert-box" id="f-alert-${i}"></div></div>
+        </div>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+function toggleTask(i) {
+  const card = document.getElementById('tcard-'+i);
+  const isOpen = card.classList.contains('expanded');
+  document.querySelectorAll('.task-card').forEach(c=>c.classList.remove('expanded'));
+  if (!isOpen) card.classList.add('expanded');
+}
+
+// ═══════════════════════════════════════════════
+//  SAVE COMPLETION (calls Apps Script web app)
+// ═══════════════════════════════════════════════
+async function saveCompletion(i, taskName, row) {
+  const hrs   = document.getElementById(`f-hrs-${i}`).value.trim();
+  const date  = document.getElementById(`f-date-${i}`).value;
+  const by    = document.getElementById(`f-by-${i}`).value.trim();
+  const notes = document.getElementById(`f-notes-${i}`).value.trim();
+  const updHrs = document.getElementById(`f-upd-${i}`).value === 'yes';
+
+  if (!hrs || !date || !by || !notes) {
+    setAlert(`f-alert-${i}`, '⚠ Please fill in all required fields: Hours Counter, Date, Completed By, and Notes.', 'error');
+    return;
+  }
+
+  document.getElementById(`f-saving-${i}`).style.display = 'inline';
+  document.querySelector(`#tcard-${i} .btn-primary`).disabled = true;
+  setAlert(`f-alert-${i}`, '', 'success');
+
+  if (!scriptUrl) {
+    // No script URL — instruct user but show what would be sent
+    document.getElementById(`f-saving-${i}`).style.display = 'none';
+    document.querySelector(`#tcard-${i} .btn-primary`).disabled = false;
+    setAlert(`f-alert-${i}`,
+      `⚠ No Apps Script URL configured. To enable live updates, go to the top of this tab and enter your script URL.\n\n` +
+      `Data ready to submit:\n• Task: ${taskName}\n• Hours: ${hrs}\n• Date: ${date}\n• By: ${by}\n• Notes: ${notes}`,
+      'error');
+    return;
+  }
+
+  try {
+    const payload = {
+      action: 'saveServiceDone',
+      row:    row,
+      taskName,
+      completionHrs:    hrs,
+      completionDate:   date,
+      completedBy:      by,
+      notes,
+      updateHrsCounter: updHrs
+    };
+
+    const res = await fetch(scriptUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify(payload)
+    });
+
+    const json = await res.json();
+    document.getElementById(`f-saving-${i}`).style.display = 'none';
+    document.querySelector(`#tcard-${i} .btn-primary`).disabled = false;
+
+    if (json.success) {
+      setAlert(`f-alert-${i}`, `✓ ${json.message || 'Service record saved successfully.'}\nNew status: ${json.newStatus || '—'} · Next due at: ${json.newDueAt || '—'} hrs`, 'success');
+      toast(`✓ ${taskName} — service recorded.`, 'success');
+      // Refresh maintenance data
+      maintData = null; maintFullLoaded = false; taskCardsBuilt = false;
+      setTimeout(() => { loadMaintData().then(()=>{ buildTaskCards(); loadMaintDash(); }); }, 1500);
+      // Update hours display
+      if (updHrs) document.getElementById('current-hrs-display').textContent = parseFloat(hrs).toLocaleString() + ' hrs';
+    } else {
+      setAlert(`f-alert-${i}`, '⚠ Error: ' + (json.error||'Unknown error from script.'), 'error');
+    }
+  } catch(e) {
+    document.getElementById(`f-saving-${i}`).style.display = 'none';
+    document.querySelector(`#tcard-${i} .btn-primary`).disabled = false;
+    setAlert(`f-alert-${i}`, '⚠ Network error: '+e.message+'. Check your script URL and CORS settings.', 'error');
+  }
+}
+
+// ═══════════════════════════════════════════════
+//  HOURS COUNTER UPDATE
+// ═══════════════════════════════════════════════
+async function updateHoursCounter() {
+  const val = document.getElementById('new-hrs-input').value.trim();
+  if (!val || isNaN(parseFloat(val))) {
+    setAlert('hrs-alert', '⚠ Please enter a valid number.', 'error'); return;
+  }
+
+  if (!scriptUrl) {
+    setAlert('hrs-alert', '⚠ No Apps Script URL configured. Enter the URL at the top of this panel to enable live updates.', 'error'); return;
+  }
+
+  setAlert('hrs-alert', '⏳ Updating...', 'success');
+
+  try {
+    const payload = { action: 'updateHoursCounter', newHours: parseFloat(val) };
+    const res = await fetch(scriptUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify(payload)
+    });
+    const json = await res.json();
+    if (json.success) {
+      document.getElementById('current-hrs-display').textContent = parseFloat(val).toLocaleString() + ' hrs';
+      document.getElementById('new-hrs-input').value = '';
+      setAlert('hrs-alert', `✓ Hours counter updated to ${parseFloat(val).toLocaleString()} hrs. All maintenance schedules have recalculated.`, 'success');
+      toast('✓ Hours counter updated.', 'success');
+      maintData = null; maintFullLoaded = false;
+    } else {
+      setAlert('hrs-alert', '⚠ '+(json.error||'Update failed.'), 'error');
+    }
+  } catch(e) {
+    setAlert('hrs-alert', '⚠ Network error: '+e.message, 'error');
+  }
+}
+
+// ═══════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════
+loadDashboard();
+loadMaintDash();
+
+// Auto-refresh every 5 mins
+setInterval(() => { maintData=null; loadDashboard(); loadMaintDash(); if(maintFullLoaded){maintFullLoaded=false;loadMaintFull();} }, 5*60*1000);
+</script>
+</body>
+</html>
