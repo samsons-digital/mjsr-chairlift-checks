@@ -1,0 +1,1 @@
+# mjsr-chairlift-checks
