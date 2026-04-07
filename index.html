@@ -204,6 +204,70 @@
 
   @keyframes up { from{opacity:0;transform:translateY(8px);} to{opacity:1;transform:translateY(0);} }
   @media(max-width:680px) { .two-col,.action-row,.quick-links,.completion-form { grid-template-columns:1fr; } .completion-form .span2 { grid-column:span 1; } }
+
+  /* ═══ CHECK FORMS ═══ */
+  .check-form-wrap { animation:up 0.3s ease both; max-width:860px; }
+  .form-header { background:var(--navy); border-radius:12px; padding:20px 24px; margin-bottom:18px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; }
+  .form-header.green { background:var(--green); }
+  .form-header.blue  { background:var(--blue); }
+  .form-header-title { font-family:'Barlow Condensed',sans-serif; font-size:22px; font-weight:700; color:#fff; }
+  .form-header-sub { font-family:'DM Mono',monospace; font-size:10px; color:rgba(255,255,255,0.65); margin-top:3px; }
+  .form-section { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:18px 20px; margin-bottom:14px; }
+  .form-section-title { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--text3); padding-bottom:10px; border-bottom:1px solid var(--border); margin-bottom:14px; }
+  .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .form-grid.three { grid-template-columns:1fr 1fr 1fr; }
+  .form-grid.one { grid-template-columns:1fr; }
+  .fg-span2 { grid-column:span 2; }
+  .fg-span3 { grid-column:span 3; }
+  .fg-span1 { grid-column:span 1; }
+  .fld { display:flex; flex-direction:column; gap:4px; }
+  .fld label { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:1.5px; text-transform:uppercase; color:var(--text3); }
+  .fld input, .fld select, .fld textarea {
+    font-family:'DM Mono',monospace; font-size:12px; border:1px solid var(--border);
+    border-radius:7px; padding:8px 11px; background:var(--bg); color:var(--text);
+    outline:none; transition:border-color 0.18s; width:100%;
+  }
+  .fld input:focus, .fld select:focus, .fld textarea:focus { border-color:var(--gold); }
+  .fld textarea { resize:vertical; min-height:64px; }
+  .fld .req { color:var(--red); }
+
+  /* OK / FAULT toggle buttons */
+  .check-row { display:flex; align-items:center; justify-content:space-between; padding:8px 0; border-bottom:1px solid rgba(0,0,0,0.04); gap:10px; }
+  .check-row:last-child { border-bottom:none; }
+  .check-row-label { font-family:'DM Mono',monospace; font-size:11px; color:var(--text); flex:1; line-height:1.4; }
+  .check-row-label span { font-size:10px; color:var(--text3); }
+  .toggle-group { display:flex; gap:6px; flex-shrink:0; }
+  .tog { font-family:'DM Mono',monospace; font-size:10px; font-weight:500; padding:5px 14px; border-radius:5px; border:1px solid var(--border); background:var(--surface2); color:var(--text2); cursor:pointer; transition:all 0.15s; }
+  .tog.ok.active    { background:var(--green-dim); color:var(--green); border-color:rgba(45,122,69,0.3); }
+  .tog.fault.active { background:var(--red-dim); color:var(--red); border-color:rgba(184,48,48,0.3); }
+  .tog.nc.active    { background:var(--amber-dim); color:var(--amber); border-color:rgba(196,122,26,0.3); }
+
+  /* Conditional section */
+  .cond-section { display:none; background:var(--surface2); border:1px solid var(--border); border-radius:9px; padding:14px 16px; margin-top:10px; }
+  .cond-section.visible { display:block; }
+
+  /* Submit bar */
+  .submit-bar { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px 20px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; }
+  .submit-confirm { font-family:'DM Mono',monospace; font-size:10px; color:var(--text2); display:flex; align-items:center; gap:8px; }
+  .submit-confirm input { width:auto; }
+  .btn-submit { font-family:'DM Mono',monospace; font-size:12px; font-weight:500; letter-spacing:1px; text-transform:uppercase; padding:12px 28px; border-radius:8px; border:none; cursor:pointer; background:var(--green); color:#fff; transition:all 0.18s; }
+  .btn-submit:hover { opacity:0.88; }
+  .btn-submit:disabled { background:var(--border2); color:var(--text3); cursor:not-allowed; }
+  .btn-submit.blue { background:var(--blue); }
+  .form-progress { font-family:'DM Mono',monospace; font-size:10px; color:var(--text3); }
+
+  /* Operator manager */
+  .op-manager { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px 20px; margin-top:14px; }
+  .op-list { display:flex; flex-direction:column; gap:6px; margin-top:10px; }
+  .op-row { display:flex; align-items:center; gap:10px; padding:7px 10px; background:var(--surface2); border:1px solid var(--border); border-radius:7px; }
+  .op-name { font-family:'DM Mono',monospace; font-size:11px; color:var(--text); font-weight:500; flex:1; }
+  .op-role { font-family:'DM Mono',monospace; font-size:10px; color:var(--text3); }
+  .op-del { font-family:'DM Mono',monospace; font-size:10px; color:var(--red); background:var(--red-dim); border:1px solid rgba(184,48,48,0.2); border-radius:5px; padding:4px 10px; cursor:pointer; }
+
+  @media(max-width:680px) {
+    .form-grid, .form-grid.three { grid-template-columns:1fr; }
+    .fg-span2, .fg-span3 { grid-column:span 1; }
+  }
 </style>
 </head>
 <body>
@@ -229,6 +293,8 @@
 <div class="tab-bar">
   <div class="tab-bar-inner">
     <button class="tab-btn active" onclick="switchTab('dashboard')">📊 Dashboard</button>
+    <button class="tab-btn" onclick="switchTab('startcheck')">🌅 Start of Day Check</button>
+    <button class="tab-btn" onclick="switchTab('closecheck')">🌆 End of Day Check</button>
     <button class="tab-btn" onclick="switchTab('maintenance')">🔧 Maintenance Schedule</button>
     <button class="tab-btn" onclick="switchTab('amendment')">✏️ Amend Schedule</button>
   </div>
@@ -302,7 +368,396 @@
   </div>
 
   <!-- ══════════════════════════════════════
-       TAB 2 — MAINTENANCE SCHEDULE (read-only view)
+       TAB 2 — START OF DAY CHECK
+  ══════════════════════════════════════ -->
+  <div class="tab-pane" id="tab-startcheck">
+    <div class="check-form-wrap">
+
+      <div class="form-header green">
+        <div>
+          <div class="form-header-title">Start of Day Check</div>
+          <div class="form-header-sub">Malam Jabba Chairlift — Complete before opening to tourists</div>
+        </div>
+        <div id="start-date-display" style="font-family:'DM Mono',monospace;font-size:11px;color:rgba(255,255,255,0.75)"></div>
+      </div>
+
+      <!-- Personnel -->
+      <div class="form-section">
+        <div class="form-section-title">Personnel</div>
+        <div class="form-grid">
+          <div class="fld"><label>Operator Name <span class="req">*</span></label><select id="s-operator"><option value="">— Select Operator —</option></select></div>
+          <div class="fld"><label>Electrical Engineer <span class="req">*</span></label><select id="s-engineer"><option value="">— Select Engineer —</option></select></div>
+          <div class="fld"><label>Senior Technical Manager <span class="req">*</span></label><select id="s-stm"><option value="">— Select STM —</option></select></div>
+          <div class="fld"><label>Date of Check <span class="req">*</span></label><input type="date" id="s-date"></div>
+        </div>
+      </div>
+
+      <!-- Weather — Driving Station -->
+      <div class="form-section">
+        <div class="form-section-title">DS1 — Weather Conditions (Driving Station)</div>
+        <div class="form-grid three">
+          <div class="fld"><label>DS1.0 Weather Conditions</label>
+            <select id="s-ds1_0">
+              <option value="">— Select —</option>
+              <option>Cloudless</option><option>Partially Cloudy</option><option>Cloud</option>
+              <option>Rain</option><option>Snow</option><option>Fog</option><option>Thunderstorm</option>
+            </select>
+          </div>
+          <div class="fld"><label>DS1.1 Temperature (°C)</label><input type="number" id="s-ds1_1" placeholder="e.g. 8.5" step="0.1"></div>
+          <div class="fld"><label>DS1.2 Wind Speed (m/s)</label><input type="number" id="s-ds1_2" placeholder="e.g. 1.5" step="0.1"></div>
+          <div class="fld"><label>DS1.3 Wind Direction</label>
+            <select id="s-ds1_3">
+              <option value="">— Select —</option>
+              <option>A – Along</option><option>T – Transversal</option>
+              <option>D – Diagonal</option><option>V – Variable</option>
+            </select>
+          </div>
+          <div class="fld"><label>DS1.4 Daily Rain (mm/hr)</label><input type="number" id="s-ds1_4" placeholder="0" step="0.1"></div>
+          <div class="fld"><label>DS1.5 Track / Line Condition</label>
+            <select id="s-ds1_5">
+              <option value="">— Select —</option>
+              <option>Clear</option><option>Wet</option><option>Icy</option><option>Snow covered</option><option>Not checked</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Times & Counter -->
+      <div class="form-section">
+        <div class="form-section-title">DS5-DS9 — Times, Counter & Readings</div>
+        <div class="form-grid three">
+          <div class="fld"><label>DS5a Technical Start Time <span class="req">*</span></label><input type="time" id="s-ds5a"></div>
+          <div class="fld"><label>DS5b Tourist Open Time <span class="req">*</span></label><input type="time" id="s-ds5b"></div>
+          <div class="fld"><label>DS6 Hours Counter at Start <span class="req">*</span></label><input type="number" id="s-ds6" placeholder="e.g. 20293"></div>
+          <div class="fld"><label>DS7 Avg Operation Speed (m/s)</label><input type="number" id="s-ds7" placeholder="e.g. 0.75" step="0.01"></div>
+          <div class="fld"><label>DS8 Tension Voltage (V)</label><input type="text" id="s-ds8" placeholder="e.g. 230/399"></div>
+          <div class="fld"><label>DS9 Absorption No-Load (A)</label><input type="number" id="s-ds9" placeholder="e.g. 178"></div>
+        </div>
+      </div>
+
+      <!-- DS10-DS20 Safety Checks -->
+      <div class="form-section">
+        <div class="form-section-title">DS10-DS20 — Safety Checks (Driving Station)</div>
+        <div id="start-ds-checks"></div>
+      </div>
+
+      <!-- DS21-DS27 Mechanical -->
+      <div class="form-section">
+        <div class="form-section-title">DS21-DS27 — Mechanical Readings (Driving Station)</div>
+        <div class="form-grid three">
+          <div class="fld"><label>DS21 Rope Tension Position (cm)</label><input type="number" id="s-ds21" placeholder="e.g. 212"></div>
+          <div class="fld"><label>DS22 Bull Wheel Check</label><select id="s-ds22"><option value="">—</option><option>OK</option><option>FAULT – see comments</option></select></div>
+          <div class="fld"><label>DS23 Chair Passage Check</label><select id="s-ds23"><option value="">—</option><option>OK</option><option>FAULT – see comments</option></select></div>
+          <div class="fld"><label>DS24 Were Any Chairs Moved?</label><select id="s-ds24" onchange="toggleCond('s-ds24b-cond',this.value==='Yes')"><option>No</option><option>Yes</option></select></div>
+          <div class="fld"><label>DS25 Gearbox Temperature (°C)</label><input type="number" id="s-ds25" placeholder="e.g. 14" step="0.1"></div>
+          <div class="fld"><label>DS26 Brake Pressure</label><input type="number" id="s-ds26" placeholder="e.g. 8.63" step="0.01"></div>
+          <div class="fld fg-span1"><label>DS27 Tension Pressure</label><input type="number" id="s-ds27" placeholder="e.g. 8.57" step="0.01"></div>
+        </div>
+        <div class="cond-section" id="s-ds24b-cond">
+          <div class="fld"><label>DS24b Chair Numbers Moved (From – To)</label><input type="text" id="s-ds24b" placeholder="e.g. 45 – 56"></div>
+        </div>
+        <div class="fld" style="margin-top:12px"><label>Driving Station Comments / Anomalies</label><textarea id="s-dscomments" placeholder="Note any anomalies, observations or issues..."></textarea></div>
+      </div>
+
+      <!-- RS Return Station Weather -->
+      <div class="form-section">
+        <div class="form-section-title">RS1 — Weather Conditions (Return Station)</div>
+        <div class="form-grid three">
+          <div class="fld"><label>RS1.0 Weather</label>
+            <select id="s-rs1_0"><option value="">— Select —</option>
+              <option>Cloudless</option><option>Partially Cloudy</option><option>Cloud</option>
+              <option>Rain</option><option>Snow</option><option>Fog</option><option>Thunderstorm</option>
+            </select>
+          </div>
+          <div class="fld"><label>RS1.1 Temperature (°C)</label><input type="number" id="s-rs1_1" placeholder="e.g. 5.6" step="0.1"></div>
+          <div class="fld"><label>RS1.2 Wind Speed (m/s)</label><input type="number" id="s-rs1_2" placeholder="e.g. 0" step="0.1"></div>
+          <div class="fld"><label>RS1.3 Wind Direction</label>
+            <select id="s-rs1_3"><option value="">— Select —</option>
+              <option>A – Along</option><option>T – Transversal</option><option>D – Diagonal</option><option>V – Variable</option>
+            </select>
+          </div>
+          <div class="fld"><label>RS1.4 Rain (mm/hr)</label><input type="number" id="s-rs1_4" placeholder="0" step="0.1"></div>
+        </div>
+      </div>
+
+      <!-- RS5-RS11 Return Station Checks -->
+      <div class="form-section">
+        <div class="form-section-title">RS5-RS11 — Safety Checks (Return Station)</div>
+        <div id="start-rs-checks"></div>
+        <div class="fld" style="margin-top:12px"><label>Return Station Comments / Anomalies</label><textarea id="s-rscomments" placeholder="Note any anomalies at the return station..."></textarea></div>
+      </div>
+
+      <!-- Passengers -->
+      <div class="form-section">
+        <div class="form-section-title">Passengers</div>
+        <div class="form-grid">
+          <div class="fld"><label>Morning Passenger Count</label><input type="number" id="s-morningpax" placeholder="0"></div>
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <div class="submit-bar">
+        <div class="submit-confirm">
+          <input type="checkbox" id="s-confirm">
+          <label for="s-confirm" style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text2)">I confirm all checks above have been physically performed and the information is accurate.</label>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+          <div class="form-progress" id="s-progress"></div>
+          <button class="btn-submit" id="s-submit-btn" onclick="submitStartCheck()" disabled>Submit Start Check</button>
+        </div>
+      </div>
+      <div class="alert-box" id="s-submit-alert" style="margin-top:10px"></div>
+
+    </div><!-- end check-form-wrap -->
+  </div><!-- end tab-startcheck -->
+
+  <!-- ══════════════════════════════════════
+       TAB 3 — END OF DAY CHECK
+  ══════════════════════════════════════ -->
+  <div class="tab-pane" id="tab-closecheck">
+    <div class="check-form-wrap">
+
+      <div class="form-header blue">
+        <div>
+          <div class="form-header-title">End of Day Check</div>
+          <div class="form-header-sub">Malam Jabba Chairlift — Complete at close of operations</div>
+        </div>
+        <div id="close-date-display" style="font-family:'DM Mono',monospace;font-size:11px;color:rgba(255,255,255,0.75)"></div>
+      </div>
+
+      <!-- Personnel -->
+      <div class="form-section">
+        <div class="form-section-title">Personnel</div>
+        <div class="form-grid">
+          <div class="fld"><label>Closing Operator <span class="req">*</span></label><select id="c-operator"><option value="">— Select Operator —</option></select></div>
+          <div class="fld"><label>Electrical Engineer <span class="req">*</span></label><select id="c-engineer"><option value="">— Select Engineer —</option></select></div>
+          <div class="fld"><label>Senior Technical Manager <span class="req">*</span></label><select id="c-stm"><option value="">— Select STM —</option></select></div>
+          <div class="fld"><label>Date of Check <span class="req">*</span></label><input type="date" id="c-date"></div>
+        </div>
+      </div>
+
+      <!-- Weather at close -->
+      <div class="form-section">
+        <div class="form-section-title">DS1 — Weather Conditions at Close (Driving Station)</div>
+        <div class="form-grid three">
+          <div class="fld"><label>DS1.0 Weather</label><select id="c-ds1_0"><option value="">— Select —</option><option>Cloudless</option><option>Partially Cloudy</option><option>Cloud</option><option>Rain</option><option>Snow</option><option>Fog</option><option>Thunderstorm</option></select></div>
+          <div class="fld"><label>DS1.1 Temperature (°C)</label><input type="number" id="c-ds1_1" placeholder="e.g. 4.9" step="0.1"></div>
+          <div class="fld"><label>DS1.2 Wind Speed (m/s)</label><input type="number" id="c-ds1_2" placeholder="e.g. 0" step="0.1"></div>
+          <div class="fld"><label>DS1.3 Wind Direction</label><select id="c-ds1_3"><option value="">— Select —</option><option>A – Along</option><option>T – Transversal</option><option>D – Diagonal</option><option>V – Variable</option></select></div>
+          <div class="fld"><label>DS1.4 Rain (mm/hr)</label><input type="number" id="c-ds1_4" placeholder="0" step="0.1"></div>
+        </div>
+      </div>
+
+      <!-- End times & counter -->
+      <div class="form-section">
+        <div class="form-section-title">DS5-DS9 — Close Times, Counter & Readings</div>
+        <div class="form-grid three">
+          <div class="fld"><label>DS5 Operation End Time <span class="req">*</span></label><input type="time" id="c-ds5"></div>
+          <div class="fld"><label>DS6 Hours Counter at End <span class="req">*</span></label><input type="number" id="c-ds6" placeholder="e.g. 20302"></div>
+          <div class="fld"><label>DS7 Avg Speed (m/s)</label><input type="number" id="c-ds7" placeholder="e.g. 0.78" step="0.01"></div>
+          <div class="fld"><label>DS8 Tension Voltage (V)</label><input type="text" id="c-ds8" placeholder="e.g. 230/399"></div>
+          <div class="fld"><label>DS9 Absorption No-Load (A)</label><input type="number" id="c-ds9" placeholder="e.g. 84"></div>
+        </div>
+      </div>
+
+      <!-- DS10-DS20 Safety Checks -->
+      <div class="form-section">
+        <div class="form-section-title">DS10-DS20 — Safety Checks (Driving Station)</div>
+        <div id="close-ds-checks"></div>
+      </div>
+
+      <!-- DS21-DS27 Mechanical -->
+      <div class="form-section">
+        <div class="form-section-title">DS21-DS27 — Mechanical Readings at Close</div>
+        <div class="form-grid three">
+          <div class="fld"><label>DS21 Rope Tension (cm)</label><input type="number" id="c-ds21" placeholder="e.g. 211"></div>
+          <div class="fld"><label>DS22 Bull Wheel Check</label><select id="c-ds22"><option value="">—</option><option>OK</option><option>FAULT – see comments</option></select></div>
+          <div class="fld"><label>DS23 Chair Passage Check</label><select id="c-ds23"><option value="">—</option><option>OK</option><option>FAULT – see comments</option></select></div>
+          <div class="fld"><label>DS24 Were Any Chairs Moved?</label><select id="c-ds24" onchange="toggleCond('c-ds24b-cond',this.value==='Yes')"><option>No</option><option>Yes</option></select></div>
+          <div class="fld"><label>DS25 Gearbox Temperature (°C)</label><input type="number" id="c-ds25" step="0.1" placeholder="e.g. 33"></div>
+          <div class="fld"><label>DS26 Brake Pressure</label><input type="number" id="c-ds26" step="0.01" placeholder="e.g. 8.22"></div>
+          <div class="fld"><label>DS27 Tension Pressure</label><input type="number" id="c-ds27" step="0.01" placeholder="e.g. 8.62"></div>
+        </div>
+        <div class="cond-section" id="c-ds24b-cond">
+          <div class="fld"><label>DS24b Chair Numbers Moved (From – To)</label><input type="text" id="c-ds24b" placeholder="e.g. 45 – 56"></div>
+        </div>
+        <div class="fld" style="margin-top:12px"><label>Driving Station Comments / Anomalies</label><textarea id="c-dscomments"></textarea></div>
+      </div>
+
+      <!-- RS Return Station -->
+      <div class="form-section">
+        <div class="form-section-title">RS1 — Weather at Return Station (Close)</div>
+        <div class="form-grid three">
+          <div class="fld"><label>RS1.0 Weather</label><select id="c-rs1_0"><option value="">— Select —</option><option>Cloudless</option><option>Partially Cloudy</option><option>Cloud</option><option>Rain</option><option>Snow</option><option>Fog</option><option>Thunderstorm</option></select></div>
+          <div class="fld"><label>RS1.1 Temperature (°C)</label><input type="number" id="c-rs1_1" step="0.1"></div>
+          <div class="fld"><label>RS1.2 Wind Speed (m/s)</label><input type="number" id="c-rs1_2" step="0.1"></div>
+          <div class="fld"><label>RS1.3 Wind Direction</label><select id="c-rs1_3"><option value="">— Select —</option><option>A – Along</option><option>T – Transversal</option><option>D – Diagonal</option><option>V – Variable</option></select></div>
+          <div class="fld"><label>RS1.4 Rain (mm/hr)</label><input type="number" id="c-rs1_4" step="0.1"></div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">RS5-RS11 — Safety Checks (Return Station)</div>
+        <div id="close-rs-checks"></div>
+        <div class="fld" style="margin-top:12px"><label>Return Station Comments</label><textarea id="c-rscomments"></textarea></div>
+      </div>
+
+      <!-- Passengers -->
+      <div class="form-section">
+        <div class="form-section-title">Passenger Count</div>
+        <div class="form-grid">
+          <div class="fld"><label>Total Passengers — Upward Trips <span class="req">*</span></label><input type="number" id="c-paxup" placeholder="0"></div>
+          <div class="fld"><label>Total Passengers — Downward Trips <span class="req">*</span></label><input type="number" id="c-paxdown" placeholder="0"></div>
+          <div class="fld"><label>Total Fuel Used (Litres)</label><input type="number" id="c-fuel" placeholder="0" step="0.1"></div>
+        </div>
+      </div>
+
+      <!-- Interruption -->
+      <div class="form-section">
+        <div class="form-section-title">Operation Interruption</div>
+        <div class="form-grid">
+          <div class="fld"><label>Was there any interruption today?</label>
+            <select id="c-interruption" onchange="toggleCond('c-int-cond',this.value==='Yes')">
+              <option value="No">No</option><option value="Yes">Yes</option>
+            </select>
+          </div>
+        </div>
+        <div class="cond-section" id="c-int-cond">
+          <div class="form-grid three" style="margin-top:8px">
+            <div class="fld"><label>Duration (minutes)</label><input type="number" id="c-intdur" placeholder="e.g. 45"></div>
+            <div class="fld"><label>Reason</label>
+              <select id="c-intreason">
+                <option value="">— Select —</option>
+                <option>Weather – Rain / Snow</option><option>Weather – Wind</option>
+                <option>Technical – Mechanical</option><option>Technical – Electrical</option>
+                <option>Safety – Emergency Stop</option><option>Maintenance</option><option>Other</option>
+              </select>
+            </div>
+            <div class="fld fg-span3"><label>Details & Resolution</label><textarea id="c-intdetails" placeholder="Describe what happened and how it was resolved..."></textarea></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Anomaly -->
+      <div class="form-section">
+        <div class="form-section-title">Anomaly</div>
+        <div class="form-grid">
+          <div class="fld"><label>Was any anomaly found today?</label>
+            <select id="c-anomaly" onchange="toggleCond('c-anom-cond',this.value==='Yes')">
+              <option value="No">No</option><option value="Yes">Yes</option>
+            </select>
+          </div>
+        </div>
+        <div class="cond-section" id="c-anom-cond">
+          <div class="form-grid three" style="margin-top:8px">
+            <div class="fld"><label>Anomaly Description</label><input type="text" id="c-anomdesc" placeholder="Brief description"></div>
+            <div class="fld"><label>Severity</label>
+              <select id="c-anomsev">
+                <option value="">— Select —</option>
+                <option>Low</option><option>Medium</option><option>High</option><option>Critical</option>
+              </select>
+            </div>
+            <div class="fld"><label>Immediate Action Taken</label><input type="text" id="c-anomaction"></div>
+            <div class="fld"><label>Follow-Up Required?</label><select id="c-anomfollowup"><option>No</option><option>Yes</option></select></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Maintenance -->
+      <div class="form-section">
+        <div class="form-section-title">Maintenance Carried Out</div>
+        <div class="form-grid">
+          <div class="fld"><label>Was any maintenance carried out today?</label>
+            <select id="c-maintenance" onchange="toggleCond('c-maint-cond',this.value==='Yes')">
+              <option value="No">No</option><option value="Yes">Yes</option>
+            </select>
+          </div>
+        </div>
+        <div class="cond-section" id="c-maint-cond">
+          <div class="form-grid three" style="margin-top:8px">
+            <div class="fld"><label>Maintenance Task</label>
+              <select id="c-mainttask">
+                <option value="">— Select from schedule —</option>
+                <option>Base Bull Wheel Bearing / Grease</option>
+                <option>Top Bull Wheel Bearing / Grease</option>
+                <option>Main Motor / Universal Shaft</option>
+                <option>Gear Box / Universal Shaft</option>
+                <option>Grip Hangers Movement</option>
+                <option>Greasing of Hanger Grips</option>
+                <option>Greasing of Towers & Assemblies</option>
+                <option>Service Brake / Motor Bearings & Service</option>
+                <option>Brake Motor Bearings & Service</option>
+                <option>Hydraulic Oil (Tension & Brake)</option>
+                <option>Main Gear Box Oil Replacement</option>
+                <option>Auxiliary Gear Box Oil Replacement</option>
+                <option>N.D.T of Rope and All Tests</option>
+                <option>General Cleaning</option>
+                <option>Chair Movement</option>
+                <option>Tower Inspection</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="fld"><label>Maintenance Type</label>
+              <select id="c-mainttype">
+                <option value="">— Select —</option>
+                <option>Scheduled</option><option>Corrective</option><option>Preventive</option><option>Emergency</option>
+              </select>
+            </div>
+            <div class="fld fg-span3"><label>Description of work carried out</label><textarea id="c-maintdesc" placeholder="Describe the maintenance work in detail..."></textarea></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Incident -->
+      <div class="form-section">
+        <div class="form-section-title">Accident / Incident</div>
+        <div class="form-grid">
+          <div class="fld"><label>Did any accident or incident occur today?</label>
+            <select id="c-incident" onchange="toggleCond('c-inc-cond',this.value==='Yes')">
+              <option value="No">No</option><option value="Yes">Yes</option>
+            </select>
+          </div>
+        </div>
+        <div class="cond-section" id="c-inc-cond" style="border-left:3px solid var(--red)">
+          <div class="form-grid three" style="margin-top:8px">
+            <div class="fld"><label>Incident Type</label>
+              <select id="c-inctype">
+                <option value="">— Select —</option>
+                <option>Guest Injury</option><option>Staff Injury</option>
+                <option>Equipment Failure</option><option>Near Miss</option><option>Other</option>
+              </select>
+            </div>
+            <div class="fld"><label>Severity</label>
+              <select id="c-incsev">
+                <option value="">— Select —</option>
+                <option>Low</option><option>Medium</option><option>High</option><option>Critical</option>
+              </select>
+            </div>
+            <div class="fld fg-span3"><label>Full Incident Description</label><textarea id="c-incdesc" placeholder="Describe the full incident in detail..."></textarea></div>
+            <div class="fld"><label>Was First Aid Administered?</label><select id="c-firstaid"><option>No</option><option>Yes</option></select></div>
+            <div class="fld"><label>Has this been Reported to Management?</label><select id="c-reported"><option>No</option><option>Yes</option></select></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <div class="submit-bar">
+        <div class="submit-confirm">
+          <input type="checkbox" id="c-confirm">
+          <label for="c-confirm" style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text2)">I confirm all close-down checks above have been physically performed and the information is accurate.</label>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+          <div class="form-progress" id="c-progress"></div>
+          <button class="btn-submit blue" id="c-submit-btn" onclick="submitCloseCheck()" disabled>Submit End of Day Check</button>
+        </div>
+      </div>
+      <div class="alert-box" id="c-submit-alert" style="margin-top:10px"></div>
+
+    </div><!-- end check-form-wrap -->
+  </div><!-- end tab-closecheck -->
+
+  <!-- ══════════════════════════════════════
+       TAB 4 — MAINTENANCE SCHEDULE (read-only view)
   ══════════════════════════════════════ -->
   <div class="tab-pane" id="tab-maintenance">
     <div style="animation:up 0.3s ease both;">
@@ -382,6 +837,25 @@
           <div class="shimmer" style="height:56px;border-radius:12px;"></div>
           <div class="shimmer" style="height:56px;border-radius:12px;"></div>
           <div class="shimmer" style="height:56px;border-radius:12px;"></div>
+        </div>
+
+        <!-- OPERATOR MANAGER -->
+        <div class="section-label" style="margin-top:24px">Manage Operator List</div>
+        <div class="op-manager">
+          <div class="form-grid" style="margin-bottom:12px">
+            <div class="fld"><label>New Operator / Engineer Name</label><input type="text" id="op-new-name" placeholder="e.g. Engr Shahid Khan"></div>
+            <div class="fld"><label>Role</label>
+              <select id="op-new-role">
+                <option value="">— Select Role —</option>
+                <option>Operator</option>
+                <option>Electrical Engineer</option>
+                <option>SNR Technical Manager</option>
+              </select>
+            </div>
+          </div>
+          <button class="btn-primary" onclick="addOperator()">Add to List</button>
+          <div class="section-label" style="margin-top:16px">Current Operators</div>
+          <div class="op-list" id="op-manager-list"><div class="shimmer"></div></div>
         </div>
 
       </div><!-- end amend-panel -->
@@ -933,8 +1407,381 @@ async function updateHoursCounter() {
 }
 
 // ═══════════════════════════════════════════════
-//  INIT
+//  CHECK FORM SETUP
 // ═══════════════════════════════════════════════
+
+const DS_CHECKS = [
+  { id:'ds10', code:'DS10', label:'Auxiliary Engine Check (Visual & Pre-heating)' },
+  { id:'ds11', code:'DS11', label:'Drive Machinery / Gearbox Check' },
+  { id:'ds12', code:'DS12', label:'Service & Emergency Brake Check (Visual + Test)' },
+  { id:'ds13', code:'DS13', label:'Safety Circuit Check (Short-Circuit & Interruption Test)' },
+  { id:'ds14', code:'DS14', label:'Stop and Slow-Down Buttons Test' },
+  { id:'ds15', code:'DS15', label:'Telephones Check (Between Stations)' },
+  { id:'ds16', code:'DS16', label:'Loudspeaker Check (Test Message)' },
+  { id:'ds17', code:'DS17', label:'Two-Way Radios Check (Battery Charge)' },
+  { id:'ds18', code:'DS18', label:'Correct Execution of Test Run' },
+  { id:'ds19', code:'DS19', label:'Check of Access Lanes for Customers' },
+  { id:'ds20', code:'DS20', label:'Check of Boarding & Disembarking Platforms' },
+];
+
+const RS_CHECKS = [
+  { id:'rs5',  code:'RS5',  label:'Stop & Slow-Down Buttons Test' },
+  { id:'rs6',  code:'RS6',  label:'Telephones Check' },
+  { id:'rs7',  code:'RS7',  label:'Two-Way Radios Check' },
+  { id:'rs8',  code:'RS8',  label:'Access Lanes for Customers' },
+  { id:'rs9',  code:'RS9',  label:'Boarding & Disembarking Platforms' },
+  { id:'rs10', code:'RS10', label:'Bull Wheel Check (Noise & Concentricity)' },
+  { id:'rs11', code:'RS11', label:'Smooth Passage of Chairs Around Station' },
+];
+
+const checkValues = {}; // stores OK/FAULT/NC per prefix+id
+
+function buildCheckRows(containerId, checks, prefix) {
+  const wrap = document.getElementById(containerId);
+  if (!wrap) return;
+  wrap.innerHTML = checks.map(c => `
+    <div class="check-row">
+      <div class="check-row-label"><span>${c.code} —</span> ${c.label}</div>
+      <div class="toggle-group">
+        <button class="tog ok" onclick="setCheck('${prefix}','${c.id}','OK',this)">OK</button>
+        <button class="tog fault" onclick="setCheck('${prefix}','${c.id}','FAULT – see comments',this)">FAULT</button>
+        <button class="tog nc" onclick="setCheck('${prefix}','${c.id}','Not Checked',this)">N/C</button>
+      </div>
+    </div>`).join('');
+}
+
+function setCheck(prefix, id, val, btn) {
+  checkValues[prefix+'_'+id] = val;
+  const group = btn.closest('.toggle-group');
+  group.querySelectorAll('.tog').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function getCheck(prefix, id) { return checkValues[prefix+'_'+id] || ''; }
+
+function toggleCond(id, show) {
+  const el = document.getElementById(id);
+  if (el) el.classList.toggle('visible', show);
+}
+
+// Set today's date in both forms
+function initFormDates() {
+  const t = todayISO();
+  const disp = today();
+  const sd = document.getElementById('s-date');
+  const cd = document.getElementById('c-date');
+  if (sd) sd.value = t;
+  if (cd) cd.value = t;
+  const sdd = document.getElementById('start-date-display');
+  const cdd = document.getElementById('close-date-display');
+  if (sdd) sdd.textContent = disp;
+  if (cdd) cdd.textContent = disp;
+}
+
+// Populate operator dropdowns
+let operatorCache = [];
+async function loadOperators() {
+  try {
+    const res = await fetch(scriptUrl + '?action=getOperators');
+    const json = await res.json();
+    if (json.success) {
+      operatorCache = json.operators;
+      populateOperatorDropdowns();
+    }
+  } catch(e) {
+    // Fall back to hardcoded list
+    operatorCache = [
+      {name:'Ibrar Akbar',      role:'Operator'},
+      {name:'Nasir Khan',       role:'Operator'},
+      {name:'Habib Ullah',      role:'Operator'},
+      {name:'Ayrab Hussain',    role:'Operator'},
+      {name:'Hazrat Hussain',   role:'Operator'},
+      {name:'Engr Akram Khan',  role:'Electrical Engineer'},
+      {name:'Engr Ishtiaq',     role:'Electrical Engineer'},
+      {name:'Engr Bilal Tariq', role:'SNR Technical Manager'},
+      {name:'Engr Adnan Khan',  role:'SNR Technical Manager'},
+    ];
+    populateOperatorDropdowns();
+  }
+}
+
+function populateOperatorDropdowns() {
+  const ops  = operatorCache.filter(o => o.role === 'Operator');
+  const engs = operatorCache.filter(o => o.role === 'Electrical Engineer');
+  const stms = operatorCache.filter(o => o.role === 'SNR Technical Manager');
+
+  ['s-operator','c-operator'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.innerHTML = '<option value="">— Select Operator —</option>' +
+      ops.map(o=>`<option>${o.name}</option>`).join('');
+  });
+  ['s-engineer','c-engineer'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.innerHTML = '<option value="">— Select Engineer —</option>' +
+      engs.map(o=>`<option>${o.name}</option>`).join('');
+  });
+  ['s-stm','c-stm'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.innerHTML = '<option value="">— Select STM —</option>' +
+      stms.map(o=>`<option>${o.name}</option>`).join('');
+  });
+
+  // Also build operator manager list in amendment tab
+  buildOperatorManager();
+}
+
+// ── Confirmation checkbox enables submit ──────────────────────────────────────
+document.addEventListener('change', e => {
+  if (e.target.id === 's-confirm') document.getElementById('s-submit-btn').disabled = !e.target.checked;
+  if (e.target.id === 'c-confirm') document.getElementById('c-submit-btn').disabled = !e.target.checked;
+});
+
+// ═══════════════════════════════════════════════
+//  SUBMIT START CHECK
+// ═══════════════════════════════════════════════
+async function submitStartCheck() {
+  const btn = document.getElementById('s-submit-btn');
+  const alertEl = document.getElementById('s-submit-alert');
+
+  const operator = document.getElementById('s-operator').value;
+  const engineer = document.getElementById('s-engineer').value;
+  const stm      = document.getElementById('s-stm').value;
+  const date     = document.getElementById('s-date').value;
+  const ds6      = document.getElementById('s-ds6').value;
+
+  if (!operator || !engineer || !stm || !date || !ds6) {
+    setAlert('s-submit-alert', '⚠ Please fill in all required fields: Operator, Engineer, STM, Date, and Hours Counter.', 'error');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Submitting...';
+  setAlert('s-submit-alert', '', 'success');
+
+  const payload = {
+    action: 'submitStartCheck',
+    date,
+    operatorName:      operator,
+    electricalEngineer: engineer,
+    stm,
+    ds1_0_weather:     document.getElementById('s-ds1_0').value,
+    ds1_1_temp:        document.getElementById('s-ds1_1').value,
+    ds1_2_wind:        document.getElementById('s-ds1_2').value,
+    ds1_3_dir:         document.getElementById('s-ds1_3').value,
+    ds1_4_rain:        document.getElementById('s-ds1_4').value,
+    ds1_5_track:       document.getElementById('s-ds1_5').value,
+    ds5a_techStart:    document.getElementById('s-ds5a').value,
+    ds5b_touristOpen:  document.getElementById('s-ds5b').value,
+    ds6_hoursStart:    ds6,
+    ds7_avgSpeed:      document.getElementById('s-ds7').value,
+    ds8_voltage:       document.getElementById('s-ds8').value,
+    ds9_absorption:    document.getElementById('s-ds9').value,
+    ds10: getCheck('s','ds10'), ds11: getCheck('s','ds11'), ds12: getCheck('s','ds12'),
+    ds13: getCheck('s','ds13'), ds14: getCheck('s','ds14'), ds15: getCheck('s','ds15'),
+    ds16: getCheck('s','ds16'), ds17: getCheck('s','ds17'), ds18: getCheck('s','ds18'),
+    ds19: getCheck('s','ds19'), ds20: getCheck('s','ds20'),
+    ds21_ropeTension:  document.getElementById('s-ds21').value,
+    ds22_bullWheel:    document.getElementById('s-ds22').value,
+    ds23_chairPassage: document.getElementById('s-ds23').value,
+    ds24_chairsMoved:  document.getElementById('s-ds24').value,
+    ds24b_chairNums:   document.getElementById('s-ds24b').value,
+    ds25_gearboxTemp:  document.getElementById('s-ds25').value,
+    ds26_brakePressure:document.getElementById('s-ds26').value,
+    ds27_tensionPress: document.getElementById('s-ds27').value,
+    dsComments:        document.getElementById('s-dscomments').value,
+    rs1_0_weather:     document.getElementById('s-rs1_0').value,
+    rs1_1_temp:        document.getElementById('s-rs1_1').value,
+    rs1_2_wind:        document.getElementById('s-rs1_2').value,
+    rs1_3_dir:         document.getElementById('s-rs1_3').value,
+    rs1_4_rain:        document.getElementById('s-rs1_4').value,
+    rs5:  getCheck('s','rs5'),  rs6:  getCheck('s','rs6'),  rs7:  getCheck('s','rs7'),
+    rs8:  getCheck('s','rs8'),  rs9:  getCheck('s','rs9'),  rs10: getCheck('s','rs10'),
+    rs11: getCheck('s','rs11'),
+    rsComments:        document.getElementById('s-rscomments').value,
+    morningPassengers: document.getElementById('s-morningpax').value,
+  };
+
+  try {
+    const res  = await fetch(scriptUrl, { method:'POST', headers:{'Content-Type':'text/plain'}, body: JSON.stringify(payload) });
+    const json = await res.json();
+    if (json.success) {
+      setAlert('s-submit-alert',
+        '✓ Start of Day check submitted successfully.' +
+        (json.faults && json.faults.length > 0 ? '\n⚠ Fault alert sent to SNR Technical Manager for: ' + json.faults.join(', ') + '.' : ''),
+        'success');
+      btn.textContent = '✓ Submitted';
+      toast('✓ Start of Day check submitted.', 'success');
+      // Refresh dashboard metrics
+      mantData = null; loadDashboard();
+    } else {
+      setAlert('s-submit-alert', '⚠ Error: ' + (json.error||'Unknown error.'), 'error');
+      btn.disabled = false; btn.textContent = 'Submit Start Check';
+    }
+  } catch(e) {
+    setAlert('s-submit-alert', '⚠ Network error: ' + e.message, 'error');
+    btn.disabled = false; btn.textContent = 'Submit Start Check';
+  }
+}
+
+// ═══════════════════════════════════════════════
+//  SUBMIT CLOSE CHECK
+// ═══════════════════════════════════════════════
+async function submitCloseCheck() {
+  const btn     = document.getElementById('c-submit-btn');
+  const alertEl = document.getElementById('c-submit-alert');
+
+  const operator = document.getElementById('c-operator').value;
+  const engineer = document.getElementById('c-engineer').value;
+  const stm      = document.getElementById('c-stm').value;
+  const date     = document.getElementById('c-date').value;
+  const ds6      = document.getElementById('c-ds6').value;
+  const paxup    = document.getElementById('c-paxup').value;
+  const paxdown  = document.getElementById('c-paxdown').value;
+
+  if (!operator || !engineer || !stm || !date || !ds6 || paxup==='' || paxdown==='') {
+    setAlert('c-submit-alert', '⚠ Please fill in all required fields: Operator, Engineer, STM, Date, Hours Counter, and Passenger counts.', 'error');
+    return;
+  }
+
+  btn.disabled = true; btn.textContent = 'Submitting...';
+  setAlert('c-submit-alert', '', 'success');
+
+  const payload = {
+    action: 'submitCloseCheck',
+    date,
+    closingOperator:   operator,
+    electricalEngineer: engineer,
+    stm,
+    ds1_0_weather:     document.getElementById('c-ds1_0').value,
+    ds1_1_temp:        document.getElementById('c-ds1_1').value,
+    ds1_2_wind:        document.getElementById('c-ds1_2').value,
+    ds1_3_dir:         document.getElementById('c-ds1_3').value,
+    ds1_4_rain:        document.getElementById('c-ds1_4').value,
+    ds5_endTime:       document.getElementById('c-ds5').value,
+    ds6_hoursEnd:      ds6,
+    ds7_avgSpeed:      document.getElementById('c-ds7').value,
+    ds8_voltage:       document.getElementById('c-ds8').value,
+    ds9_absorption:    document.getElementById('c-ds9').value,
+    ds10: getCheck('c','ds10'), ds11: getCheck('c','ds11'), ds12: getCheck('c','ds12'),
+    ds13: getCheck('c','ds13'), ds14: getCheck('c','ds14'), ds15: getCheck('c','ds15'),
+    ds16: getCheck('c','ds16'), ds17: getCheck('c','ds17'), ds18: getCheck('c','ds18'),
+    ds19: getCheck('c','ds19'), ds20: getCheck('c','ds20'),
+    ds21_ropeTension:  document.getElementById('c-ds21').value,
+    ds22_bullWheel:    document.getElementById('c-ds22').value,
+    ds23_chairPassage: document.getElementById('c-ds23').value,
+    ds24_chairsMoved:  document.getElementById('c-ds24').value,
+    ds24b_chairNums:   document.getElementById('c-ds24b').value,
+    ds25_gearboxTemp:  document.getElementById('c-ds25').value,
+    ds26_brakePressure:document.getElementById('c-ds26').value,
+    ds27_tensionPress: document.getElementById('c-ds27').value,
+    dsComments:        document.getElementById('c-dscomments').value,
+    rs1_0_weather:     document.getElementById('c-rs1_0').value,
+    rs1_1_temp:        document.getElementById('c-rs1_1').value,
+    rs1_2_wind:        document.getElementById('c-rs1_2').value,
+    rs1_3_dir:         document.getElementById('c-rs1_3').value,
+    rs1_4_rain:        document.getElementById('c-rs1_4').value,
+    rs5:  getCheck('c','rs5'),  rs6:  getCheck('c','rs6'),  rs7:  getCheck('c','rs7'),
+    rs8:  getCheck('c','rs8'),  rs9:  getCheck('c','rs9'),  rs10: getCheck('c','rs10'),
+    rs11: getCheck('c','rs11'),
+    rsComments:        document.getElementById('c-rscomments').value,
+    passengersUp:      paxup,
+    passengersDown:    paxdown,
+    fuelLitres:        document.getElementById('c-fuel').value,
+    interruption:      document.getElementById('c-interruption').value,
+    intDuration:       document.getElementById('c-intdur')?.value || '',
+    intReason:         document.getElementById('c-intreason')?.value || '',
+    intDetails:        document.getElementById('c-intdetails')?.value || '',
+    anomaly:           document.getElementById('c-anomaly').value,
+    anomalyDesc:       document.getElementById('c-anomdesc')?.value || '',
+    anomalySeverity:   document.getElementById('c-anomsev')?.value || '',
+    anomalyAction:     document.getElementById('c-anomaction')?.value || '',
+    anomalyFollowUp:   document.getElementById('c-anomfollowup')?.value || '',
+    maintenance:       document.getElementById('c-maintenance').value,
+    maintTask:         document.getElementById('c-mainttask')?.value || '',
+    maintType:         document.getElementById('c-mainttype')?.value || '',
+    maintDesc:         document.getElementById('c-maintdesc')?.value || '',
+    incident:          document.getElementById('c-incident').value,
+    incidentType:      document.getElementById('c-inctype')?.value || '',
+    incidentSeverity:  document.getElementById('c-incsev')?.value || '',
+    incidentDesc:      document.getElementById('c-incdesc')?.value || '',
+    firstAid:          document.getElementById('c-firstaid')?.value || '',
+    reportedMgmt:      document.getElementById('c-reported')?.value || '',
+  };
+
+  try {
+    const res  = await fetch(scriptUrl, { method:'POST', headers:{'Content-Type':'text/plain'}, body: JSON.stringify(payload) });
+    const json = await res.json();
+    if (json.success) {
+      setAlert('c-submit-alert', '✓ End of Day check submitted successfully.' +
+        (payload.incident === 'Yes' ? '\n🚨 Incident alert sent to SNR Technical Manager and GM.' : ''), 'success');
+      btn.textContent = '✓ Submitted';
+      toast('✓ End of Day check submitted.', 'success');
+      mantData = null; loadDashboard();
+    } else {
+      setAlert('c-submit-alert', '⚠ Error: ' + (json.error||'Unknown error.'), 'error');
+      btn.disabled = false; btn.textContent = 'Submit End of Day Check';
+    }
+  } catch(e) {
+    setAlert('c-submit-alert', '⚠ Network error: ' + e.message, 'error');
+    btn.disabled = false; btn.textContent = 'Submit End of Day Check';
+  }
+}
+
+// ═══════════════════════════════════════════════
+//  OPERATOR MANAGER (inside Amend tab)
+// ═══════════════════════════════════════════════
+function buildOperatorManager() {
+  const wrap = document.getElementById('op-manager-list');
+  if (!wrap) return;
+  if (!operatorCache.length) { wrap.innerHTML = '<div style="font-family:\'DM Mono\',monospace;font-size:11px;color:var(--text3)">No operators loaded.</div>'; return; }
+
+  wrap.innerHTML = operatorCache.map((o, i) => `
+    <div class="op-row">
+      <div class="op-name">${o.name}</div>
+      <div class="op-role">${o.role}</div>
+      <button class="op-del" onclick="removeOperator(${o.row || i+2},'${o.name.replace(/'/g,"\\'")}')">Remove</button>
+    </div>`).join('');
+}
+
+async function addOperator() {
+  const name = document.getElementById('op-new-name').value.trim();
+  const role = document.getElementById('op-new-role').value;
+  if (!name || !role) { toast('Please enter a name and select a role.', 'error'); return; }
+
+  try {
+    const res  = await fetch(scriptUrl, { method:'POST', headers:{'Content-Type':'text/plain'}, body: JSON.stringify({ action:'saveOperator', name, role, pin: PIN }) });
+    const json = await res.json();
+    if (json.success) {
+      toast('✓ ' + json.message, 'success');
+      document.getElementById('op-new-name').value = '';
+      await loadOperators();
+    } else { toast('⚠ ' + json.error, 'error'); }
+  } catch(e) { toast('⚠ Network error: ' + e.message, 'error'); }
+}
+
+async function removeOperator(row, name) {
+  if (!confirm('Remove ' + name + ' from the operator list?')) return;
+  try {
+    const res  = await fetch(scriptUrl, { method:'POST', headers:{'Content-Type':'text/plain'}, body: JSON.stringify({ action:'removeOperator', row, pin: PIN }) });
+    const json = await res.json();
+    if (json.success) { toast('✓ ' + name + ' removed.', 'success'); await loadOperators(); }
+    else { toast('⚠ ' + json.error, 'error'); }
+  } catch(e) { toast('⚠ ' + e.message, 'error'); }
+}
+
+// ═══════════════════════════════════════════════
+//  INIT FORMS
+// ═══════════════════════════════════════════════
+buildCheckRows('start-ds-checks', DS_CHECKS, 's');
+buildCheckRows('start-rs-checks', RS_CHECKS, 's');
+buildCheckRows('close-ds-checks', DS_CHECKS, 'c');
+buildCheckRows('close-rs-checks', RS_CHECKS, 'c');
+initFormDates();
+loadOperators();
+
 loadDashboard();
 loadMaintDash();
 
