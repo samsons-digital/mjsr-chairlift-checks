@@ -481,7 +481,7 @@ document.getElementById('today-date').textContent = today();
 
 async function loadDashboard() {
   try {
-    const [startRows, closeRows] = await Promise.all([fetchCSV('0'), fetchCSV('1')]);
+    const [startRows, closeRows] = await Promise.all([fetchCSV('877790646'), fetchCSV('32877298')]);
 
     // Find headers
     const sHdr = startRows.find(r => r.some(c => c.toLowerCase().includes('timestamp')));
@@ -563,7 +563,7 @@ async function loadMaintData() {
     // From the script, Maintenance_Config is tab 9 in the desired order
     // We'll try multiple known gids
     let rows = null;
-    const gidsToTry = ['532107903','2','1540842484'];
+    const gidsToTry = ['1938159016'];
     for (const gid of gidsToTry) {
       try {
         const r = await fetchCSV(gid);
