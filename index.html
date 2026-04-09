@@ -264,9 +264,55 @@
   .op-role { font-family:'DM Mono',monospace; font-size:10px; color:var(--text3); }
   .op-del { font-family:'DM Mono',monospace; font-size:10px; color:var(--red); background:var(--red-dim); border:1px solid rgba(184,48,48,0.2); border-radius:5px; padding:4px 10px; cursor:pointer; }
 
+  /* ═══════════════════════════════════════════════
+     SUBMISSION LOG STYLES (new)
+  ═══════════════════════════════════════════════ */
+  .log-section { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:18px 20px; margin-top:16px; }
+  .log-filter-bar { display:flex; align-items:flex-end; gap:10px; flex-wrap:wrap; margin-bottom:16px; padding-bottom:14px; border-bottom:1px solid var(--border); }
+  .log-filter-bar .field-group { flex:1; min-width:130px; }
+  .log-filter-bar .field-group input { width:100%; font-family:'DM Mono',monospace; font-size:12px; border:1px solid var(--border); border-radius:7px; padding:8px 11px; background:var(--bg); color:var(--text); outline:none; transition:border-color 0.18s; }
+  .log-filter-bar .field-group input:focus { border-color:var(--gold); }
+  .log-filter-bar .field-group select { width:100%; font-family:'DM Mono',monospace; font-size:12px; border:1px solid var(--border); border-radius:7px; padding:8px 11px; background:var(--bg); color:var(--text); outline:none; transition:border-color 0.18s; }
+  .log-filter-bar .field-group select:focus { border-color:var(--gold); }
+  .log-summary-strip { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:14px; }
+  .log-summary-chip { font-family:'DM Mono',monospace; font-size:10px; padding:5px 12px; border-radius:20px; border:1px solid var(--border); background:var(--surface2); color:var(--text2); }
+  .log-summary-chip.start-chip  { background:var(--green-dim); color:#1a5c30; border-color:rgba(45,122,69,0.25); }
+  .log-summary-chip.close-chip  { background:var(--blue-dim);  color:#1a3a70; border-color:rgba(34,88,160,0.25); }
+  .log-summary-chip.maint-chip  { background:var(--amber-dim); color:#7a4a08; border-color:rgba(196,122,26,0.25); }
+
+  /* Log entry rows */
+  .log-entry { border:1px solid var(--border); border-radius:10px; margin-bottom:8px; overflow:hidden; transition:border-color 0.18s; }
+  .log-entry:hover { border-color:var(--border2); }
+  .log-entry-head { display:flex; align-items:center; gap:12px; padding:11px 14px; cursor:pointer; background:var(--surface); }
+  .log-type-badge { font-family:'DM Mono',monospace; font-size:9px; font-weight:500; padding:3px 9px; border-radius:10px; white-space:nowrap; flex-shrink:0; }
+  .badge-start { background:var(--green-dim); color:#1a5c30; border:1px solid rgba(45,122,69,0.25); }
+  .badge-close { background:var(--blue-dim);  color:#1a3a70; border:1px solid rgba(34,88,160,0.25); }
+  .badge-maint { background:var(--amber-dim); color:#7a4a08; border:1px solid rgba(196,122,26,0.25); }
+  .log-date-col { font-family:'DM Mono',monospace; font-size:11px; font-weight:500; color:var(--text); min-width:100px; flex-shrink:0; }
+  .log-operator-col { font-family:'DM Mono',monospace; font-size:11px; color:var(--text2); flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .log-meta-col { font-family:'DM Mono',monospace; font-size:10px; color:var(--text3); flex-shrink:0; text-align:right; }
+  .log-chevron { width:14px; height:14px; flex-shrink:0; color:var(--text3); transition:transform 0.2s; }
+  .log-entry.expanded .log-chevron { transform:rotate(180deg); }
+  .log-entry-body { display:none; background:var(--surface2); border-top:1px solid var(--border); padding:14px 16px; }
+  .log-entry.expanded .log-entry-body { display:block; }
+  .log-detail-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:8px 16px; }
+  .log-detail-item { }
+  .log-detail-label { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:1px; text-transform:uppercase; color:var(--text3); margin-bottom:2px; }
+  .log-detail-value { font-family:'DM Mono',monospace; font-size:11px; color:var(--text); word-break:break-word; }
+  .log-flag-row { display:flex; gap:6px; flex-wrap:wrap; margin-top:10px; padding-top:10px; border-top:1px solid var(--border); }
+  .log-flag { font-family:'DM Mono',monospace; font-size:9px; padding:3px 9px; border-radius:10px; }
+  .log-flag.fault  { background:var(--red-dim);   color:#7a1818; border:1px solid rgba(184,48,48,0.3); }
+  .log-flag.warn   { background:var(--amber-dim); color:#7a4a08; border:1px solid rgba(196,122,26,0.3); }
+  .log-flag.ok     { background:var(--green-dim); color:#1a5c30; border:1px solid rgba(45,122,69,0.3); }
+  .log-no-results  { font-family:'DM Mono',monospace; font-size:11px; color:var(--text3); text-align:center; padding:32px 16px; }
+  .log-load-more   { width:100%; font-family:'DM Mono',monospace; font-size:10px; padding:10px; border:1px dashed var(--border2); border-radius:8px; background:transparent; color:var(--text3); cursor:pointer; margin-top:8px; transition:all 0.18s; }
+  .log-load-more:hover { border-color:var(--gold); color:var(--gold); }
+
   @media(max-width:680px) {
     .form-grid, .form-grid.three { grid-template-columns:1fr; }
     .fg-span2, .fg-span3 { grid-column:span 1; }
+    .log-filter-bar { flex-direction:column; }
+    .log-filter-bar .field-group { min-width:100%; }
   }
 </style>
 </head>
@@ -362,7 +408,7 @@
     </div>
 
     <footer>
-      <span>MJSR Chairlift Daily Operations Portal v2.0 // April 2026</span>
+      <span>MJSR Chairlift Daily Operations Portal v2.1 // April 2026</span>
       <span>Sheet: 1ZY5wLqQqxtK8OWgeGpd5naZyW4MbGrbAR7Bj63bF6iA</span>
     </footer>
   </div>
@@ -508,8 +554,8 @@
       </div>
       <div class="alert-box" id="s-submit-alert" style="margin-top:10px"></div>
 
-    </div><!-- end check-form-wrap -->
-  </div><!-- end tab-startcheck -->
+    </div>
+  </div>
 
   <!-- ══════════════════════════════════════
        TAB 3 — END OF DAY CHECK
@@ -525,7 +571,6 @@
         <div id="close-date-display" style="font-family:'DM Mono',monospace;font-size:11px;color:rgba(255,255,255,0.75)"></div>
       </div>
 
-      <!-- Personnel -->
       <div class="form-section">
         <div class="form-section-title">Personnel</div>
         <div class="form-grid">
@@ -536,7 +581,6 @@
         </div>
       </div>
 
-      <!-- Weather at close -->
       <div class="form-section">
         <div class="form-section-title">DS1 — Weather Conditions at Close (Driving Station)</div>
         <div class="form-grid three">
@@ -548,7 +592,6 @@
         </div>
       </div>
 
-      <!-- End times & counter -->
       <div class="form-section">
         <div class="form-section-title">DS5-DS9 — Close Times, Counter & Readings</div>
         <div class="form-grid three">
@@ -560,13 +603,11 @@
         </div>
       </div>
 
-      <!-- DS10-DS20 Safety Checks -->
       <div class="form-section">
         <div class="form-section-title">DS10-DS20 — Safety Checks (Driving Station)</div>
         <div id="close-ds-checks"></div>
       </div>
 
-      <!-- DS21-DS27 Mechanical -->
       <div class="form-section">
         <div class="form-section-title">DS21-DS27 — Mechanical Readings at Close</div>
         <div class="form-grid three">
@@ -584,7 +625,6 @@
         <div class="fld" style="margin-top:12px"><label>Driving Station Comments / Anomalies</label><textarea id="c-dscomments"></textarea></div>
       </div>
 
-      <!-- RS Return Station -->
       <div class="form-section">
         <div class="form-section-title">RS1 — Weather at Return Station (Close)</div>
         <div class="form-grid three">
@@ -602,7 +642,6 @@
         <div class="fld" style="margin-top:12px"><label>Return Station Comments</label><textarea id="c-rscomments"></textarea></div>
       </div>
 
-      <!-- Passengers -->
       <div class="form-section">
         <div class="form-section-title">Passenger Count</div>
         <div class="form-grid">
@@ -612,7 +651,6 @@
         </div>
       </div>
 
-      <!-- Interruption -->
       <div class="form-section">
         <div class="form-section-title">Operation Interruption</div>
         <div class="form-grid">
@@ -638,7 +676,6 @@
         </div>
       </div>
 
-      <!-- Anomaly -->
       <div class="form-section">
         <div class="form-section-title">Anomaly</div>
         <div class="form-grid">
@@ -663,7 +700,6 @@
         </div>
       </div>
 
-      <!-- Maintenance -->
       <div class="form-section">
         <div class="form-section-title">Maintenance Carried Out</div>
         <div class="form-grid">
@@ -708,7 +744,6 @@
         </div>
       </div>
 
-      <!-- Incident -->
       <div class="form-section">
         <div class="form-section-title">Accident / Incident</div>
         <div class="form-grid">
@@ -740,7 +775,6 @@
         </div>
       </div>
 
-      <!-- Submit -->
       <div class="submit-bar">
         <div class="submit-confirm">
           <input type="checkbox" id="c-confirm">
@@ -753,11 +787,11 @@
       </div>
       <div class="alert-box" id="c-submit-alert" style="margin-top:10px"></div>
 
-    </div><!-- end check-form-wrap -->
-  </div><!-- end tab-closecheck -->
+    </div>
+  </div>
 
   <!-- ══════════════════════════════════════
-       TAB 4 — MAINTENANCE SCHEDULE (read-only view)
+       TAB 4 — MAINTENANCE SCHEDULE
   ══════════════════════════════════════ -->
   <div class="tab-pane" id="tab-maintenance">
     <div style="animation:up 0.3s ease both;">
@@ -770,7 +804,7 @@
   </div>
 
   <!-- ══════════════════════════════════════
-       TAB 3 — AMEND SCHEDULE (PIN protected)
+       TAB 5 — AMEND SCHEDULE (PIN protected)
   ══════════════════════════════════════ -->
   <div class="tab-pane" id="tab-amendment">
     <div class="maint-amend">
@@ -839,6 +873,55 @@
           <div class="shimmer" style="height:56px;border-radius:12px;"></div>
         </div>
 
+        <!-- ═══════════════════════════════════
+             SUBMISSION LOG (new section)
+        ═══════════════════════════════════ -->
+        <div class="section-label" style="margin-top:28px" id="log-section-label">Submission Log</div>
+
+        <div class="log-section">
+
+          <!-- Filter bar -->
+          <div class="log-filter-bar">
+            <div class="field-group">
+              <div class="field-label">From Date</div>
+              <input type="date" id="log-from" onchange="applyLogFilter()">
+            </div>
+            <div class="field-group">
+              <div class="field-label">To Date</div>
+              <input type="date" id="log-to" onchange="applyLogFilter()">
+            </div>
+            <div class="field-group">
+              <div class="field-label">Type</div>
+              <select id="log-type-filter" onchange="applyLogFilter()">
+                <option value="all">All Types</option>
+                <option value="start">Start of Day</option>
+                <option value="close">End of Day</option>
+                <option value="maint">Maintenance</option>
+              </select>
+            </div>
+            <div style="display:flex;gap:8px;align-items:flex-end;padding-bottom:1px;">
+              <button class="btn-primary" onclick="loadSubmissionLog()">↻ Refresh</button>
+              <button class="btn-secondary" onclick="clearLogFilter()">Clear</button>
+            </div>
+          </div>
+
+          <!-- Summary chips -->
+          <div class="log-summary-strip" id="log-summary-strip" style="display:none">
+            <div class="log-summary-chip start-chip" id="log-chip-start">—</div>
+            <div class="log-summary-chip close-chip" id="log-chip-close">—</div>
+            <div class="log-summary-chip maint-chip"  id="log-chip-maint">—</div>
+            <div class="log-summary-chip" id="log-chip-total">—</div>
+          </div>
+
+          <!-- Loading / content area -->
+          <div id="log-wrap">
+            <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--text3);padding:20px 0;text-align:center;">
+              Set a date range above and click Refresh, or just click Refresh to load all records.
+            </div>
+          </div>
+
+        </div>
+
         <!-- OPERATOR MANAGER -->
         <div class="section-label" style="margin-top:24px">Manage Operator List</div>
         <div class="op-manager">
@@ -871,8 +954,11 @@
 // ═══════════════════════════════════════════════
 //  CONFIG
 // ═══════════════════════════════════════════════
-const SHEET_ID = '1ZY5wLqQqxtK8OWgeGpd5naZyW4MbGrbAR7Bj63bF6iA';
-const PIN      = '1234';
+const SHEET_ID  = '1ZY5wLqQqxtK8OWgeGpd5naZyW4MbGrbAR7Bj63bF6iA';
+const GID_START = '877790646';
+const GID_CLOSE = '32877298';
+const GID_MAINT = '1938159016';
+const PIN       = '1234';
 
 const TASKS = [
   { row:3,  name:"Base Bull Wheel Bearing / Grease",                               action:"Grease",          interval:500  },
@@ -903,6 +989,13 @@ function fmt(raw) {
   if (!raw) return '—';
   const d = new Date(raw);
   return isNaN(d) ? raw : d.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
+}
+function fmtDateTime(raw) {
+  if (!raw) return '—';
+  const d = new Date(raw);
+  if (isNaN(d)) return raw;
+  return d.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}) + ' ' +
+         d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
 }
 async function fetchCSV(gid) {
   const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${gid}`;
@@ -955,9 +1048,8 @@ document.getElementById('today-date').textContent = today();
 
 async function loadDashboard() {
   try {
-    const [startRows, closeRows] = await Promise.all([fetchCSV('877790646'), fetchCSV('32877298')]);
+    const [startRows, closeRows] = await Promise.all([fetchCSV(GID_START), fetchCSV(GID_CLOSE)]);
 
-    // Find headers
     const sHdr = startRows.find(r => r.some(c => c.toLowerCase().includes('timestamp')));
     const cHdr = closeRows.find(r => r.some(c => c.toLowerCase().includes('timestamp')));
     const sData = startRows.slice(startRows.indexOf(sHdr)+1).filter(r=>r[1]&&r[1].trim());
@@ -967,17 +1059,14 @@ async function loadDashboard() {
     const todayStart = sData.find(r => { const d=new Date(r[1]); return !isNaN(d)&&d.toISOString().slice(0,10)===td; });
     const todayClose = cData.find(r => { const d=new Date(r[1]); return !isNaN(d)&&d.toISOString().slice(0,10)===td; });
 
-    // Start status
     const sdDot=document.getElementById('sd-dot'), sdSt=document.getElementById('sd-status');
     if (todayStart) { sdDot.className='check-dot dot-ok'; sdSt.textContent='✓ Submitted'; sdSt.style.color='var(--green)'; }
     else { sdDot.className='check-dot dot-none'; sdSt.textContent='⚠ Not Yet'; sdSt.style.color='var(--amber)'; }
 
-    // Close status
     const cdDot=document.getElementById('cd-dot'), cdSt=document.getElementById('cd-status');
     if (todayClose) { cdDot.className='check-dot dot-ok'; cdSt.textContent='✓ Submitted'; cdSt.style.color='var(--green)'; }
     else { cdDot.className='check-dot'; cdSt.textContent='— Pending'; }
 
-    // Passengers
     const pxDot=document.getElementById('px-dot'), pxEl=document.getElementById('px-today');
     if (todayClose && cHdr) {
       const upIdx = cHdr.findIndex(h=>h.toLowerCase().includes('upward')||h.toLowerCase().includes('passengers up'));
@@ -988,7 +1077,6 @@ async function loadDashboard() {
       pxDot.className = tot>0 ? 'check-dot dot-ok' : 'check-dot';
     } else { pxDot.className='check-dot'; pxEl.textContent='—'; }
 
-    // Metrics
     document.getElementById('m-st').textContent = sData.length;
     document.getElementById('m-cl').textContent = cData.length;
     const uDates = new Set(sData.map(r=>{const d=new Date(r[1]);return isNaN(d)?null:d.toISOString().slice(0,10);}).filter(Boolean));
@@ -1002,7 +1090,6 @@ async function loadDashboard() {
     cData.filter(r=>new Date(r[1])>=cut).forEach(r=>{ if(intrIdx>=0&&r[intrIdx]&&r[intrIdx].toLowerCase()==='yes') ints++; });
     document.getElementById('m-int').textContent = ints;
 
-    // Recent checks table
     const allDates = new Set();
     [...sData,...cData].forEach(r=>{const d=new Date(r[1]);if(!isNaN(d))allDates.add(d.toISOString().slice(0,10));});
     const sorted = [...allDates].sort((a,b)=>b.localeCompare(a)).slice(0,10);
@@ -1026,25 +1113,19 @@ async function loadDashboard() {
 }
 
 // ═══════════════════════════════════════════════
-//  MAINTENANCE DATA (shared between tabs)
+//  MAINTENANCE DATA
 // ═══════════════════════════════════════════════
 let maintData = null;
 let maintFullLoaded = false;
 
 async function loadMaintData() {
   try {
-    // Maintenance_Config is one of the known gids — try fetching by name via gid
-    // From the script, Maintenance_Config is tab 9 in the desired order
-    // We'll try multiple known gids
     let rows = null;
-    const gidsToTry = ['1938159016'];
-    for (const gid of gidsToTry) {
-      try {
-        const r = await fetchCSV(gid);
-        const hasTask = r.some(row => row.some(c=>c&&c.includes('Bull Wheel')));
-        if (hasTask) { rows = r; break; }
-      } catch(e) {}
-    }
+    try {
+      const r = await fetchCSV(GID_MAINT);
+      const hasTask = r.some(row => row.some(c=>c&&c.includes('Bull Wheel')));
+      if (hasTask) rows = r;
+    } catch(e) {}
     if (!rows) throw new Error('Maintenance_Config not found');
 
     const hdrRow = rows.find(r => r.some(c=>c.toLowerCase&&c.toLowerCase().includes('task name')));
@@ -1052,7 +1133,6 @@ async function loadMaintData() {
     const hi = rows.indexOf(hdrRow);
     const data = rows.slice(hi+1).filter(r=>r[1]&&r[1].trim());
 
-    // Current hours from R1 - look for a row with a large number near top
     let currentHrs = '—';
     for (let i=0; i<Math.min(hi,5); i++) {
       for (const cell of rows[i]) {
@@ -1062,7 +1142,6 @@ async function loadMaintData() {
       if (currentHrs !== '—') break;
     }
 
-    // Check discrepancy warning
     const discRow = rows.find(r=>r.some(c=>c&&c.toString().toLowerCase().includes('discrepancy')));
 
     maintData = {
@@ -1120,7 +1199,6 @@ async function loadMaintDash() {
 
   if (data.discrepancy) { disc.style.display='block'; disc.innerHTML=`<strong>⚠ Hours Discrepancy detected.</strong> Update Maintenance_Config cell R1 with the verified physical meter reading.`; }
 
-  // Show only non-OK tasks in dashboard widget
   const flagged = data.tasks.filter(t => !t.status.includes('OK') || t.status.includes('OVERDUE') || t.status.includes('DUE'));
   const show = flagged.length > 0 ? flagged : data.tasks.slice(0, 6);
 
@@ -1139,7 +1217,6 @@ async function loadMaintFull() {
 
   if (data.discrepancy) { disc.style.display='block'; disc.innerHTML=`<strong>⚠ Hours Discrepancy:</strong> Update Maintenance_Config cell R1 with the verified physical meter reading.`; }
 
-  // Sort: overdue first, then due soon, then ok
   const order = t => t.status.includes('OVERDUE')?0:t.status.includes('DUE')?1:t.status.includes('manual')?3:2;
   const sorted = [...data.tasks].sort((a,b)=>order(a)-order(b));
 
@@ -1182,12 +1259,13 @@ function checkPin() {
     amendUnlocked = true;
     document.getElementById('pin-gate').style.display = 'none';
     document.getElementById('amend-panel').style.display = 'block';
-
-    // Load data and build panel
     loadAmendPanel();
-
-    // Script URL is hardcoded — hide notice
     document.getElementById('script-notice').style.display = 'none';
+    // Set default log date range: last 30 days
+    const t = todayISO();
+    const from = new Date(); from.setDate(from.getDate()-30);
+    document.getElementById('log-from').value = from.toISOString().slice(0,10);
+    document.getElementById('log-to').value = t;
   } else {
     document.getElementById('pin-error').textContent = 'Incorrect PIN. Please try again.';
     document.getElementById('pin-input').value = '';
@@ -1198,6 +1276,7 @@ function checkPin() {
 function lockPanel() {
   amendUnlocked = false;
   taskCardsBuilt = false;
+  logEntries = [];
   document.getElementById('amend-panel').style.display = 'none';
   document.getElementById('pin-gate').style.display = 'block';
   document.getElementById('pin-input').value = '';
@@ -1300,7 +1379,344 @@ function toggleTask(i) {
 }
 
 // ═══════════════════════════════════════════════
-//  SAVE COMPLETION (calls Apps Script web app)
+//  SUBMISSION LOG
+// ═══════════════════════════════════════════════
+let logEntries = [];        // raw merged array of all entries
+let logFiltered = [];       // after filter applied
+const LOG_PAGE_SIZE = 25;
+let logPage = 0;
+
+async function loadSubmissionLog() {
+  const wrap = document.getElementById('log-wrap');
+  wrap.innerHTML = `<div class="shimmer" style="height:48px;border-radius:10px;margin-bottom:8px;"></div>
+                    <div class="shimmer" style="height:48px;border-radius:10px;margin-bottom:8px;width:90%"></div>
+                    <div class="shimmer" style="height:48px;border-radius:10px;width:95%"></div>`;
+
+  try {
+    const [startRows, closeRows, maintRows] = await Promise.all([
+      fetchCSV(GID_START),
+      fetchCSV(GID_CLOSE),
+      fetchCSV(GID_MAINT)
+    ]);
+
+    logEntries = [];
+
+    // ── Parse Start of Day submissions ──
+    const sHdr = startRows.find(r => r.some(c => c.toLowerCase().includes('timestamp')));
+    if (sHdr) {
+      const sData = startRows.slice(startRows.indexOf(sHdr)+1).filter(r=>r[1]&&r[1].trim());
+      const opIdx  = sHdr.findIndex(h => h.toLowerCase().includes('operator name') && !h.toLowerCase().includes('senior') && !h.toLowerCase().includes('electrical'));
+      const stmIdx = sHdr.findIndex(h => h.toLowerCase().includes('senior') || h.toLowerCase().includes('stm'));
+      const engIdx = sHdr.findIndex(h => h.toLowerCase().includes('electrical'));
+      const ds6Idx = sHdr.findIndex(h => h.toLowerCase().includes('ds6') || h.toLowerCase().includes('hours counter'));
+      const ds7Idx = sHdr.findIndex(h => h.toLowerCase().includes('ds7') || h.toLowerCase().includes('avg'));
+      const wx0Idx = sHdr.findIndex(h => h.toLowerCase().includes('ds1.0') || (h.toLowerCase().includes('weather') && !h.toLowerCase().includes('rs')));
+      const wtIdx  = sHdr.findIndex(h => h.toLowerCase().includes('ds1.1') || h.toLowerCase().includes('temperature'));
+      const wvIdx  = sHdr.findIndex(h => h.toLowerCase().includes('ds1.2') || h.toLowerCase().includes('wind speed'));
+      const paxIdx = sHdr.findIndex(h => h.toLowerCase().includes('passenger') || h.toLowerCase().includes('morning'));
+
+      sData.forEach(r => {
+        const d = new Date(r[1]);
+        if (isNaN(d)) return;
+        // Detect any FAULTs in this row
+        const faults = [];
+        r.forEach((cell, i) => { if (cell && cell.toString().toLowerCase().includes('fault')) faults.push(sHdr[i]||('Col '+i)); });
+        logEntries.push({
+          type:      'start',
+          ts:        d,
+          dateISO:   d.toISOString().slice(0,10),
+          dateLabel: fmtDateTime(d),
+          operator:  opIdx>=0 ? r[opIdx]||'—' : '—',
+          stm:       stmIdx>=0 ? r[stmIdx]||'—' : '—',
+          engineer:  engIdx>=0 ? r[engIdx]||'—' : '—',
+          hoursCounter: ds6Idx>=0 ? r[ds6Idx]||'—' : '—',
+          avgSpeed:  ds7Idx>=0 ? r[ds7Idx]||'—' : '—',
+          weather:   wx0Idx>=0 ? r[wx0Idx]||'—' : '—',
+          tempC:     wtIdx>=0  ? r[wtIdx]||'—'  : '—',
+          windMs:    wvIdx>=0  ? r[wvIdx]||'—'  : '—',
+          passengers: paxIdx>=0 ? r[paxIdx]||'0' : '0',
+          faults,
+          raw: r
+        });
+      });
+    }
+
+    // ── Parse End of Day submissions ──
+    const cHdr = closeRows.find(r => r.some(c => c.toLowerCase().includes('timestamp')));
+    if (cHdr) {
+      const cData = closeRows.slice(closeRows.indexOf(cHdr)+1).filter(r=>r[1]&&r[1].trim());
+      const opIdx   = cHdr.findIndex(h => h.toLowerCase().includes('operator') && !h.toLowerCase().includes('senior') && !h.toLowerCase().includes('electrical'));
+      const stmIdx  = cHdr.findIndex(h => h.toLowerCase().includes('senior') || h.toLowerCase().includes('stm'));
+      const engIdx  = cHdr.findIndex(h => h.toLowerCase().includes('electrical'));
+      const ds6Idx  = cHdr.findIndex(h => h.toLowerCase().includes('ds6') || h.toLowerCase().includes('hours counter'));
+      const paxUpIdx   = cHdr.findIndex(h => h.toLowerCase().includes('upward') || h.toLowerCase().includes('passengers up'));
+      const paxDnIdx   = paxUpIdx>=0 ? paxUpIdx+1 : -1;
+      const fuelIdx    = cHdr.findIndex(h => h.toLowerCase().includes('fuel'));
+      const intrIdx    = cHdr.findIndex(h => h.toLowerCase().includes('interruption') && !h.toLowerCase().includes('duration') && !h.toLowerCase().includes('reason'));
+      const intrDurIdx = cHdr.findIndex(h => h.toLowerCase().includes('duration'));
+      const intrResIdx = cHdr.findIndex(h => h.toLowerCase().includes('reason') && h.toLowerCase().includes('interruption'));
+      const anomIdx    = cHdr.findIndex(h => h.toLowerCase().includes('anomaly') && !h.toLowerCase().includes('desc') && !h.toLowerCase().includes('sev') && !h.toLowerCase().includes('action'));
+      const anomDescIdx= cHdr.findIndex(h => h.toLowerCase().includes('anomaly') && h.toLowerCase().includes('desc'));
+      const maintIdx   = cHdr.findIndex(h => h.toLowerCase().includes('maintenance') && !h.toLowerCase().includes('task') && !h.toLowerCase().includes('type') && !h.toLowerCase().includes('desc'));
+      const maintTaskIdx = cHdr.findIndex(h => h.toLowerCase().includes('maintenance task') || (h.toLowerCase().includes('task') && !h.toLowerCase().includes('check')));
+      const incIdx     = cHdr.findIndex(h => h.toLowerCase().includes('incident') && !h.toLowerCase().includes('type') && !h.toLowerCase().includes('desc') && !h.toLowerCase().includes('sev'));
+
+      cData.forEach(r => {
+        const d = new Date(r[1]);
+        if (isNaN(d)) return;
+        const faults = [];
+        r.forEach((cell, i) => { if (cell && cell.toString().toLowerCase().includes('fault')) faults.push(cHdr[i]||('Col '+i)); });
+        const paxUp = paxUpIdx>=0 ? parseInt(r[paxUpIdx])||0 : 0;
+        const paxDn = paxDnIdx>=0 ? parseInt(r[paxDnIdx])||0 : 0;
+        logEntries.push({
+          type:       'close',
+          ts:         d,
+          dateISO:    d.toISOString().slice(0,10),
+          dateLabel:  fmtDateTime(d),
+          operator:   opIdx>=0   ? r[opIdx]||'—'   : '—',
+          stm:        stmIdx>=0  ? r[stmIdx]||'—'  : '—',
+          engineer:   engIdx>=0  ? r[engIdx]||'—'  : '—',
+          hoursCounter: ds6Idx>=0 ? r[ds6Idx]||'—' : '—',
+          passengersUp:   paxUp,
+          passengersDown: paxDn,
+          passengersTotal: paxUp + paxDn,
+          fuel:       fuelIdx>=0 ? r[fuelIdx]||'—' : '—',
+          interruption:    intrIdx>=0    ? r[intrIdx]||'No'      : 'No',
+          intrDuration:    intrDurIdx>=0 ? r[intrDurIdx]||'—'   : '—',
+          intrReason:      intrResIdx>=0 ? r[intrResIdx]||'—'   : '—',
+          anomaly:         anomIdx>=0    ? r[anomIdx]||'No'      : 'No',
+          anomalyDesc:     anomDescIdx>=0? r[anomDescIdx]||'—'  : '—',
+          maintenance:     maintIdx>=0   ? r[maintIdx]||'No'     : 'No',
+          maintTask:       maintTaskIdx>=0? r[maintTaskIdx]||'—' : '—',
+          incident:        incIdx>=0     ? r[incIdx]||'No'       : 'No',
+          faults,
+          raw: r
+        });
+      });
+    }
+
+    // ── Parse Maintenance service entries from Maint_Config history ──
+    // Look for a service log tab — maintenance records logged via saveCompletion come from script
+    // We'll scan the maint config for any rows that look like completion records
+    const mHdr = maintRows.find(r => r.some(c => c.toLowerCase&&c.toLowerCase().includes('task name')));
+    if (mHdr) {
+      const mData = maintRows.slice(maintRows.indexOf(mHdr)+1).filter(r=>r[1]&&r[1].trim());
+      // Completion records have a lastDate and lastBy
+      mData.forEach(r => {
+        const lastDate = r[5]; // col F in config
+        const lastBy   = r[6];
+        if (lastDate && lastDate.trim() && lastBy && lastBy.trim() && lastBy !== '—') {
+          const d = new Date(lastDate);
+          if (!isNaN(d)) {
+            logEntries.push({
+              type:      'maint',
+              ts:        d,
+              dateISO:   d.toISOString().slice(0,10),
+              dateLabel: fmt(d),
+              taskName:  r[1]||'—',
+              action:    r[2]||'—',
+              lastHrs:   r[4]||'—',
+              completedBy: lastBy,
+              notes:     r[12]||'—',
+              faults:    []
+            });
+          }
+        }
+      });
+    }
+
+    // Sort newest first
+    logEntries.sort((a, b) => b.ts - a.ts);
+
+    applyLogFilter();
+
+  } catch(e) {
+    console.error('Log error', e);
+    document.getElementById('log-wrap').innerHTML = `<div class="err-msg">Could not load submission log. Check sheet is publicly accessible (Viewer).</div>`;
+  }
+}
+
+function applyLogFilter() {
+  const fromVal  = document.getElementById('log-from').value;
+  const toVal    = document.getElementById('log-to').value;
+  const typeVal  = document.getElementById('log-type-filter').value;
+
+  const from = fromVal ? new Date(fromVal) : null;
+  const to   = toVal   ? new Date(toVal + 'T23:59:59') : null;
+
+  logFiltered = logEntries.filter(e => {
+    if (from && e.ts < from) return false;
+    if (to   && e.ts > to)   return false;
+    if (typeVal !== 'all' && e.type !== typeVal) return false;
+    return true;
+  });
+
+  // Update summary chips
+  const nStart = logFiltered.filter(e=>e.type==='start').length;
+  const nClose = logFiltered.filter(e=>e.type==='close').length;
+  const nMaint = logFiltered.filter(e=>e.type==='maint').length;
+  document.getElementById('log-chip-start').textContent  = `🌅 Start: ${nStart}`;
+  document.getElementById('log-chip-close').textContent  = `🌆 Close: ${nClose}`;
+  document.getElementById('log-chip-maint').textContent  = `🔧 Maint: ${nMaint}`;
+  document.getElementById('log-chip-total').textContent  = `Total: ${logFiltered.length} records`;
+  document.getElementById('log-summary-strip').style.display = logFiltered.length > 0 ? 'flex' : 'none';
+
+  logPage = 0;
+  renderLogPage();
+}
+
+function clearLogFilter() {
+  document.getElementById('log-from').value = '';
+  document.getElementById('log-to').value   = '';
+  document.getElementById('log-type-filter').value = 'all';
+  applyLogFilter();
+}
+
+function renderLogPage() {
+  const wrap = document.getElementById('log-wrap');
+
+  if (!logEntries.length) {
+    wrap.innerHTML = `<div class="log-no-results">No records loaded yet. Click Refresh to load the log.</div>`;
+    return;
+  }
+  if (!logFiltered.length) {
+    wrap.innerHTML = `<div class="log-no-results">No submissions match the selected filters.</div>`;
+    return;
+  }
+
+  const start = 0;
+  const end   = (logPage + 1) * LOG_PAGE_SIZE;
+  const slice = logFiltered.slice(start, end);
+
+  wrap.innerHTML = slice.map((e, idx) => renderLogEntry(e, idx)).join('');
+
+  if (end < logFiltered.length) {
+    wrap.innerHTML += `<button class="log-load-more" onclick="loadMoreLog()">
+      Load more — showing ${end} of ${logFiltered.length} records
+    </button>`;
+  }
+}
+
+function loadMoreLog() {
+  logPage++;
+  renderLogPage();
+}
+
+function renderLogEntry(e, idx) {
+  const typeLabel = e.type==='start' ? 'Start of Day' : e.type==='close' ? 'End of Day' : 'Maintenance';
+  const badgeClass = e.type==='start' ? 'badge-start' : e.type==='close' ? 'badge-close' : 'badge-maint';
+
+  let metaRight = '';
+  if (e.type==='start')  metaRight = `Hours: ${e.hoursCounter}`;
+  if (e.type==='close')  metaRight = `Pax: ${e.passengersTotal || '—'} · Fuel: ${e.fuel}L`;
+  if (e.type==='maint')  metaRight = `${e.lastHrs} hrs counter`;
+
+  let operatorLabel = e.operator || '—';
+  if (e.type==='maint') operatorLabel = e.completedBy || '—';
+
+  // Flag indicators for head row
+  let flagIcons = '';
+  if (e.faults && e.faults.length > 0) flagIcons += ' <span style="color:var(--red);font-size:10px;">⚠ FAULT</span>';
+  if (e.type==='close') {
+    if (e.interruption==='Yes') flagIcons += ' <span style="color:var(--amber);font-size:10px;">⏸ INTR</span>';
+    if (e.incident==='Yes')     flagIcons += ' <span style="color:var(--red);font-size:10px;">🚨 INC</span>';
+    if (e.anomaly==='Yes')      flagIcons += ' <span style="color:var(--amber);font-size:10px;">⚡ ANOM</span>';
+  }
+
+  // Detail body
+  let details = '';
+  if (e.type==='start') {
+    details = buildDetailGrid([
+      ['Date',          e.dateLabel],
+      ['Operator',      e.operator],
+      ['Electrical Eng', e.engineer],
+      ['SNR Tech Mgr',  e.stm],
+      ['Hours Counter', e.hoursCounter ? e.hoursCounter + ' hrs' : '—'],
+      ['Avg Speed',     e.avgSpeed ? e.avgSpeed + ' m/s' : '—'],
+      ['Weather',       e.weather],
+      ['Temperature',   e.tempC ? e.tempC + ' °C' : '—'],
+      ['Wind',          e.windMs ? e.windMs + ' m/s' : '—'],
+      ['Morning Pax',   e.passengers || '0'],
+    ]);
+    if (e.faults && e.faults.length > 0) {
+      details += `<div class="log-flag-row">${e.faults.map(f=>`<span class="log-flag fault">⚠ FAULT: ${f}</span>`).join('')}</div>`;
+    }
+  } else if (e.type==='close') {
+    details = buildDetailGrid([
+      ['Date',           e.dateLabel],
+      ['Operator',       e.operator],
+      ['Electrical Eng', e.engineer],
+      ['SNR Tech Mgr',   e.stm],
+      ['Hours Counter',  e.hoursCounter ? e.hoursCounter + ' hrs' : '—'],
+      ['Pax Up',         e.passengersUp],
+      ['Pax Down',       e.passengersDown],
+      ['Total Pax',      e.passengersTotal],
+      ['Fuel Used',      e.fuel ? e.fuel + ' L' : '—'],
+      ['Interruption',   e.interruption],
+      ...(e.interruption==='Yes' ? [
+        ['Intr. Duration', e.intrDuration ? e.intrDuration + ' min' : '—'],
+        ['Intr. Reason',   e.intrReason],
+      ] : []),
+      ['Anomaly',        e.anomaly],
+      ...(e.anomaly==='Yes' ? [
+        ['Anomaly Detail', e.anomalyDesc],
+      ] : []),
+      ['Maintenance',    e.maintenance],
+      ...(e.maintenance==='Yes' ? [
+        ['Maint. Task',  e.maintTask],
+      ] : []),
+      ['Incident',       e.incident],
+    ]);
+    const flags = [];
+    if (e.faults && e.faults.length > 0) e.faults.forEach(f => flags.push(`<span class="log-flag fault">⚠ ${f}</span>`));
+    if (e.interruption==='Yes')  flags.push(`<span class="log-flag warn">⏸ Interruption: ${e.intrDuration||'?'} min — ${e.intrReason||'—'}</span>`);
+    if (e.anomaly==='Yes')       flags.push(`<span class="log-flag warn">⚡ Anomaly: ${e.anomalyDesc||'—'}</span>`);
+    if (e.incident==='Yes')      flags.push(`<span class="log-flag fault">🚨 Incident Recorded</span>`);
+    if (flags.length) details += `<div class="log-flag-row">${flags.join('')}</div>`;
+  } else if (e.type==='maint') {
+    details = buildDetailGrid([
+      ['Date Completed', e.dateLabel],
+      ['Task',           e.taskName],
+      ['Action',         e.action],
+      ['Hours at Service', e.lastHrs ? e.lastHrs + ' hrs' : '—'],
+      ['Completed By',   e.completedBy],
+      ['Notes',          e.notes],
+    ]);
+  }
+
+  return `
+    <div class="log-entry" id="le-${idx}">
+      <div class="log-entry-head" onclick="toggleLogEntry(${idx})">
+        <span class="log-type-badge ${badgeClass}">${typeLabel}</span>
+        <div class="log-date-col">${fmt(e.dateISO)}</div>
+        <div class="log-operator-col">${operatorLabel}${flagIcons}</div>
+        <div class="log-meta-col">${metaRight}</div>
+        <svg class="log-chevron" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+      </div>
+      <div class="log-entry-body">
+        ${details}
+      </div>
+    </div>`;
+}
+
+function buildDetailGrid(pairs) {
+  return `<div class="log-detail-grid">` +
+    pairs.map(([label, value]) =>
+      `<div class="log-detail-item">
+        <div class="log-detail-label">${label}</div>
+        <div class="log-detail-value">${value !== undefined && value !== null && value !== '' ? value : '—'}</div>
+      </div>`
+    ).join('') +
+    `</div>`;
+}
+
+function toggleLogEntry(idx) {
+  const el = document.getElementById('le-'+idx);
+  el.classList.toggle('expanded');
+}
+
+// ═══════════════════════════════════════════════
+//  SAVE COMPLETION
 // ═══════════════════════════════════════════════
 async function saveCompletion(i, taskName, row) {
   const hrs   = document.getElementById(`f-hrs-${i}`).value.trim();
@@ -1319,12 +1735,10 @@ async function saveCompletion(i, taskName, row) {
   setAlert(`f-alert-${i}`, '', 'success');
 
   if (!scriptUrl) {
-    // No script URL — instruct user but show what would be sent
     document.getElementById(`f-saving-${i}`).style.display = 'none';
     document.querySelector(`#tcard-${i} .btn-primary`).disabled = false;
     setAlert(`f-alert-${i}`,
-      `⚠ No Apps Script URL configured. To enable live updates, go to the top of this tab and enter your script URL.\n\n` +
-      `Data ready to submit:\n• Task: ${taskName}\n• Hours: ${hrs}\n• Date: ${date}\n• By: ${by}\n• Notes: ${notes}`,
+      `⚠ No Apps Script URL configured.\n\nData ready:\n• Task: ${taskName}\n• Hours: ${hrs}\n• Date: ${date}\n• By: ${by}\n• Notes: ${notes}`,
       'error');
     return;
   }
@@ -1332,40 +1746,32 @@ async function saveCompletion(i, taskName, row) {
   try {
     const payload = {
       action: 'saveServiceDone',
-      row:    row,
-      taskName,
-      completionHrs:    hrs,
-      completionDate:   date,
-      completedBy:      by,
+      row, taskName,
+      completionHrs: hrs,
+      completionDate: date,
+      completedBy: by,
       notes,
       updateHrsCounter: updHrs
     };
 
-    const res = await fetch(scriptUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify(payload)
-    });
-
+    const res  = await fetch(scriptUrl, { method:'POST', headers:{'Content-Type':'text/plain'}, body: JSON.stringify(payload) });
     const json = await res.json();
     document.getElementById(`f-saving-${i}`).style.display = 'none';
     document.querySelector(`#tcard-${i} .btn-primary`).disabled = false;
 
     if (json.success) {
-      setAlert(`f-alert-${i}`, `✓ ${json.message || 'Service record saved successfully.'}\nNew status: ${json.newStatus || '—'} · Next due at: ${json.newDueAt || '—'} hrs`, 'success');
+      setAlert(`f-alert-${i}`, `✓ ${json.message || 'Service record saved.'}\nNew status: ${json.newStatus||'—'} · Next due: ${json.newDueAt||'—'} hrs`, 'success');
       toast(`✓ ${taskName} — service recorded.`, 'success');
-      // Refresh maintenance data
       maintData = null; maintFullLoaded = false; taskCardsBuilt = false;
       setTimeout(() => { loadMaintData().then(()=>{ buildTaskCards(); loadMaintDash(); }); }, 1500);
-      // Update hours display
       if (updHrs) document.getElementById('current-hrs-display').textContent = parseFloat(hrs).toLocaleString() + ' hrs';
     } else {
-      setAlert(`f-alert-${i}`, '⚠ Error: ' + (json.error||'Unknown error from script.'), 'error');
+      setAlert(`f-alert-${i}`, '⚠ Error: ' + (json.error||'Unknown error.'), 'error');
     }
   } catch(e) {
     document.getElementById(`f-saving-${i}`).style.display = 'none';
     document.querySelector(`#tcard-${i} .btn-primary`).disabled = false;
-    setAlert(`f-alert-${i}`, '⚠ Network error: '+e.message+'. Check your script URL and CORS settings.', 'error');
+    setAlert(`f-alert-${i}`, '⚠ Network error: '+e.message, 'error');
   }
 }
 
@@ -1377,25 +1783,18 @@ async function updateHoursCounter() {
   if (!val || isNaN(parseFloat(val))) {
     setAlert('hrs-alert', '⚠ Please enter a valid number.', 'error'); return;
   }
-
   if (!scriptUrl) {
-    setAlert('hrs-alert', '⚠ No Apps Script URL configured. Enter the URL at the top of this panel to enable live updates.', 'error'); return;
+    setAlert('hrs-alert', '⚠ No Apps Script URL configured.', 'error'); return;
   }
-
   setAlert('hrs-alert', '⏳ Updating...', 'success');
-
   try {
     const payload = { action: 'updateHoursCounter', newHours: parseFloat(val) };
-    const res = await fetch(scriptUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify(payload)
-    });
+    const res  = await fetch(scriptUrl, { method:'POST', headers:{'Content-Type':'text/plain'}, body: JSON.stringify(payload) });
     const json = await res.json();
     if (json.success) {
       document.getElementById('current-hrs-display').textContent = parseFloat(val).toLocaleString() + ' hrs';
       document.getElementById('new-hrs-input').value = '';
-      setAlert('hrs-alert', `✓ Hours counter updated to ${parseFloat(val).toLocaleString()} hrs. All maintenance schedules have recalculated.`, 'success');
+      setAlert('hrs-alert', `✓ Hours counter updated to ${parseFloat(val).toLocaleString()} hrs. All maintenance schedules recalculated.`, 'success');
       toast('✓ Hours counter updated.', 'success');
       maintData = null; maintFullLoaded = false;
     } else {
@@ -1409,7 +1808,6 @@ async function updateHoursCounter() {
 // ═══════════════════════════════════════════════
 //  CHECK FORM SETUP
 // ═══════════════════════════════════════════════
-
 const DS_CHECKS = [
   { id:'ds10', code:'DS10', label:'Auxiliary Engine Check (Visual & Pre-heating)' },
   { id:'ds11', code:'DS11', label:'Drive Machinery / Gearbox Check' },
@@ -1423,7 +1821,6 @@ const DS_CHECKS = [
   { id:'ds19', code:'DS19', label:'Check of Access Lanes for Customers' },
   { id:'ds20', code:'DS20', label:'Check of Boarding & Disembarking Platforms' },
 ];
-
 const RS_CHECKS = [
   { id:'rs5',  code:'RS5',  label:'Stop & Slow-Down Buttons Test' },
   { id:'rs6',  code:'RS6',  label:'Telephones Check' },
@@ -1434,7 +1831,7 @@ const RS_CHECKS = [
   { id:'rs11', code:'RS11', label:'Smooth Passage of Chairs Around Station' },
 ];
 
-const checkValues = {}; // stores OK/FAULT/NC per prefix+id
+const checkValues = {};
 
 function buildCheckRows(containerId, checks, prefix) {
   const wrap = document.getElementById(containerId);
@@ -1456,7 +1853,6 @@ function setCheck(prefix, id, val, btn) {
   group.querySelectorAll('.tog').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
 }
-
 function getCheck(prefix, id) { return checkValues[prefix+'_'+id] || ''; }
 
 function toggleCond(id, show) {
@@ -1464,7 +1860,6 @@ function toggleCond(id, show) {
   if (el) el.classList.toggle('visible', show);
 }
 
-// Set today's date in both forms
 function initFormDates() {
   const t = todayISO();
   const disp = today();
@@ -1478,18 +1873,16 @@ function initFormDates() {
   if (cdd) cdd.textContent = disp;
 }
 
-// Populate operator dropdowns
 let operatorCache = [];
 async function loadOperators() {
   try {
-    const res = await fetch(scriptUrl + '?action=getOperators');
+    const res  = await fetch(scriptUrl + '?action=getOperators');
     const json = await res.json();
     if (json.success) {
       operatorCache = json.operators;
       populateOperatorDropdowns();
     }
   } catch(e) {
-    // Fall back to hardcoded list
     operatorCache = [
       {name:'Ibrar Akbar',      role:'Operator'},
       {name:'Nasir Khan',       role:'Operator'},
@@ -1513,27 +1906,21 @@ function populateOperatorDropdowns() {
   ['s-operator','c-operator'].forEach(id => {
     const el = document.getElementById(id);
     if (!el) return;
-    el.innerHTML = '<option value="">— Select Operator —</option>' +
-      ops.map(o=>`<option>${o.name}</option>`).join('');
+    el.innerHTML = '<option value="">— Select Operator —</option>' + ops.map(o=>`<option>${o.name}</option>`).join('');
   });
   ['s-engineer','c-engineer'].forEach(id => {
     const el = document.getElementById(id);
     if (!el) return;
-    el.innerHTML = '<option value="">— Select Engineer —</option>' +
-      engs.map(o=>`<option>${o.name}</option>`).join('');
+    el.innerHTML = '<option value="">— Select Engineer —</option>' + engs.map(o=>`<option>${o.name}</option>`).join('');
   });
   ['s-stm','c-stm'].forEach(id => {
     const el = document.getElementById(id);
     if (!el) return;
-    el.innerHTML = '<option value="">— Select STM —</option>' +
-      stms.map(o=>`<option>${o.name}</option>`).join('');
+    el.innerHTML = '<option value="">— Select STM —</option>' + stms.map(o=>`<option>${o.name}</option>`).join('');
   });
-
-  // Also build operator manager list in amendment tab
   buildOperatorManager();
 }
 
-// ── Confirmation checkbox enables submit ──────────────────────────────────────
 document.addEventListener('change', e => {
   if (e.target.id === 's-confirm') document.getElementById('s-submit-btn').disabled = !e.target.checked;
   if (e.target.id === 'c-confirm') document.getElementById('c-submit-btn').disabled = !e.target.checked;
@@ -1544,8 +1931,6 @@ document.addEventListener('change', e => {
 // ═══════════════════════════════════════════════
 async function submitStartCheck() {
   const btn = document.getElementById('s-submit-btn');
-  const alertEl = document.getElementById('s-submit-alert');
-
   const operator = document.getElementById('s-operator').value;
   const engineer = document.getElementById('s-engineer').value;
   const stm      = document.getElementById('s-stm').value;
@@ -1562,27 +1947,24 @@ async function submitStartCheck() {
   setAlert('s-submit-alert', '', 'success');
 
   const payload = {
-    action: 'submitStartCheck',
-    date,
-    operatorName:      operator,
-    electricalEngineer: engineer,
-    stm,
-    ds1_0_weather:     document.getElementById('s-ds1_0').value,
-    ds1_1_temp:        document.getElementById('s-ds1_1').value,
-    ds1_2_wind:        document.getElementById('s-ds1_2').value,
-    ds1_3_dir:         document.getElementById('s-ds1_3').value,
-    ds1_4_rain:        document.getElementById('s-ds1_4').value,
-    ds1_5_track:       document.getElementById('s-ds1_5').value,
-    ds5a_techStart:    document.getElementById('s-ds5a').value,
-    ds5b_touristOpen:  document.getElementById('s-ds5b').value,
-    ds6_hoursStart:    ds6,
-    ds7_avgSpeed:      document.getElementById('s-ds7').value,
-    ds8_voltage:       document.getElementById('s-ds8').value,
-    ds9_absorption:    document.getElementById('s-ds9').value,
-    ds10: getCheck('s','ds10'), ds11: getCheck('s','ds11'), ds12: getCheck('s','ds12'),
-    ds13: getCheck('s','ds13'), ds14: getCheck('s','ds14'), ds15: getCheck('s','ds15'),
-    ds16: getCheck('s','ds16'), ds17: getCheck('s','ds17'), ds18: getCheck('s','ds18'),
-    ds19: getCheck('s','ds19'), ds20: getCheck('s','ds20'),
+    action: 'submitStartCheck', date,
+    operatorName: operator, electricalEngineer: engineer, stm,
+    ds1_0_weather: document.getElementById('s-ds1_0').value,
+    ds1_1_temp: document.getElementById('s-ds1_1').value,
+    ds1_2_wind: document.getElementById('s-ds1_2').value,
+    ds1_3_dir:  document.getElementById('s-ds1_3').value,
+    ds1_4_rain: document.getElementById('s-ds1_4').value,
+    ds1_5_track:document.getElementById('s-ds1_5').value,
+    ds5a_techStart:   document.getElementById('s-ds5a').value,
+    ds5b_touristOpen: document.getElementById('s-ds5b').value,
+    ds6_hoursStart: ds6,
+    ds7_avgSpeed:   document.getElementById('s-ds7').value,
+    ds8_voltage:    document.getElementById('s-ds8').value,
+    ds9_absorption: document.getElementById('s-ds9').value,
+    ds10:getCheck('s','ds10'),ds11:getCheck('s','ds11'),ds12:getCheck('s','ds12'),
+    ds13:getCheck('s','ds13'),ds14:getCheck('s','ds14'),ds15:getCheck('s','ds15'),
+    ds16:getCheck('s','ds16'),ds17:getCheck('s','ds17'),ds18:getCheck('s','ds18'),
+    ds19:getCheck('s','ds19'),ds20:getCheck('s','ds20'),
     ds21_ropeTension:  document.getElementById('s-ds21').value,
     ds22_bullWheel:    document.getElementById('s-ds22').value,
     ds23_chairPassage: document.getElementById('s-ds23').value,
@@ -1591,16 +1973,15 @@ async function submitStartCheck() {
     ds25_gearboxTemp:  document.getElementById('s-ds25').value,
     ds26_brakePressure:document.getElementById('s-ds26').value,
     ds27_tensionPress: document.getElementById('s-ds27').value,
-    dsComments:        document.getElementById('s-dscomments').value,
-    rs1_0_weather:     document.getElementById('s-rs1_0').value,
-    rs1_1_temp:        document.getElementById('s-rs1_1').value,
-    rs1_2_wind:        document.getElementById('s-rs1_2').value,
-    rs1_3_dir:         document.getElementById('s-rs1_3').value,
-    rs1_4_rain:        document.getElementById('s-rs1_4').value,
-    rs5:  getCheck('s','rs5'),  rs6:  getCheck('s','rs6'),  rs7:  getCheck('s','rs7'),
-    rs8:  getCheck('s','rs8'),  rs9:  getCheck('s','rs9'),  rs10: getCheck('s','rs10'),
-    rs11: getCheck('s','rs11'),
-    rsComments:        document.getElementById('s-rscomments').value,
+    dsComments: document.getElementById('s-dscomments').value,
+    rs1_0_weather: document.getElementById('s-rs1_0').value,
+    rs1_1_temp: document.getElementById('s-rs1_1').value,
+    rs1_2_wind: document.getElementById('s-rs1_2').value,
+    rs1_3_dir:  document.getElementById('s-rs1_3').value,
+    rs1_4_rain: document.getElementById('s-rs1_4').value,
+    rs5:getCheck('s','rs5'),rs6:getCheck('s','rs6'),rs7:getCheck('s','rs7'),
+    rs8:getCheck('s','rs8'),rs9:getCheck('s','rs9'),rs10:getCheck('s','rs10'),rs11:getCheck('s','rs11'),
+    rsComments: document.getElementById('s-rscomments').value,
     morningPassengers: document.getElementById('s-morningpax').value,
   };
 
@@ -1610,11 +1991,10 @@ async function submitStartCheck() {
     if (json.success) {
       setAlert('s-submit-alert',
         '✓ Start of Day check submitted successfully.' +
-        (json.faults && json.faults.length > 0 ? '\n⚠ Fault alert sent to SNR Technical Manager for: ' + json.faults.join(', ') + '.' : ''),
+        (json.faults && json.faults.length > 0 ? '\n⚠ Fault alert sent for: ' + json.faults.join(', ') + '.' : ''),
         'success');
       btn.textContent = '✓ Submitted';
       toast('✓ Start of Day check submitted.', 'success');
-      // Refresh dashboard metrics
       mantData = null; loadDashboard();
     } else {
       setAlert('s-submit-alert', '⚠ Error: ' + (json.error||'Unknown error.'), 'error');
@@ -1630,9 +2010,7 @@ async function submitStartCheck() {
 //  SUBMIT CLOSE CHECK
 // ═══════════════════════════════════════════════
 async function submitCloseCheck() {
-  const btn     = document.getElementById('c-submit-btn');
-  const alertEl = document.getElementById('c-submit-alert');
-
+  const btn = document.getElementById('c-submit-btn');
   const operator = document.getElementById('c-operator').value;
   const engineer = document.getElementById('c-engineer').value;
   const stm      = document.getElementById('c-stm').value;
@@ -1642,7 +2020,7 @@ async function submitCloseCheck() {
   const paxdown  = document.getElementById('c-paxdown').value;
 
   if (!operator || !engineer || !stm || !date || !ds6 || paxup==='' || paxdown==='') {
-    setAlert('c-submit-alert', '⚠ Please fill in all required fields: Operator, Engineer, STM, Date, Hours Counter, and Passenger counts.', 'error');
+    setAlert('c-submit-alert', '⚠ Please fill in all required fields.', 'error');
     return;
   }
 
@@ -1650,25 +2028,22 @@ async function submitCloseCheck() {
   setAlert('c-submit-alert', '', 'success');
 
   const payload = {
-    action: 'submitCloseCheck',
-    date,
-    closingOperator:   operator,
-    electricalEngineer: engineer,
-    stm,
-    ds1_0_weather:     document.getElementById('c-ds1_0').value,
-    ds1_1_temp:        document.getElementById('c-ds1_1').value,
-    ds1_2_wind:        document.getElementById('c-ds1_2').value,
-    ds1_3_dir:         document.getElementById('c-ds1_3').value,
-    ds1_4_rain:        document.getElementById('c-ds1_4').value,
-    ds5_endTime:       document.getElementById('c-ds5').value,
-    ds6_hoursEnd:      ds6,
-    ds7_avgSpeed:      document.getElementById('c-ds7').value,
-    ds8_voltage:       document.getElementById('c-ds8').value,
-    ds9_absorption:    document.getElementById('c-ds9').value,
-    ds10: getCheck('c','ds10'), ds11: getCheck('c','ds11'), ds12: getCheck('c','ds12'),
-    ds13: getCheck('c','ds13'), ds14: getCheck('c','ds14'), ds15: getCheck('c','ds15'),
-    ds16: getCheck('c','ds16'), ds17: getCheck('c','ds17'), ds18: getCheck('c','ds18'),
-    ds19: getCheck('c','ds19'), ds20: getCheck('c','ds20'),
+    action: 'submitCloseCheck', date,
+    closingOperator: operator, electricalEngineer: engineer, stm,
+    ds1_0_weather: document.getElementById('c-ds1_0').value,
+    ds1_1_temp: document.getElementById('c-ds1_1').value,
+    ds1_2_wind: document.getElementById('c-ds1_2').value,
+    ds1_3_dir:  document.getElementById('c-ds1_3').value,
+    ds1_4_rain: document.getElementById('c-ds1_4').value,
+    ds5_endTime: document.getElementById('c-ds5').value,
+    ds6_hoursEnd: ds6,
+    ds7_avgSpeed: document.getElementById('c-ds7').value,
+    ds8_voltage:  document.getElementById('c-ds8').value,
+    ds9_absorption: document.getElementById('c-ds9').value,
+    ds10:getCheck('c','ds10'),ds11:getCheck('c','ds11'),ds12:getCheck('c','ds12'),
+    ds13:getCheck('c','ds13'),ds14:getCheck('c','ds14'),ds15:getCheck('c','ds15'),
+    ds16:getCheck('c','ds16'),ds17:getCheck('c','ds17'),ds18:getCheck('c','ds18'),
+    ds19:getCheck('c','ds19'),ds20:getCheck('c','ds20'),
     ds21_ropeTension:  document.getElementById('c-ds21').value,
     ds22_bullWheel:    document.getElementById('c-ds22').value,
     ds23_chairPassage: document.getElementById('c-ds23').value,
@@ -1677,38 +2052,36 @@ async function submitCloseCheck() {
     ds25_gearboxTemp:  document.getElementById('c-ds25').value,
     ds26_brakePressure:document.getElementById('c-ds26').value,
     ds27_tensionPress: document.getElementById('c-ds27').value,
-    dsComments:        document.getElementById('c-dscomments').value,
-    rs1_0_weather:     document.getElementById('c-rs1_0').value,
-    rs1_1_temp:        document.getElementById('c-rs1_1').value,
-    rs1_2_wind:        document.getElementById('c-rs1_2').value,
-    rs1_3_dir:         document.getElementById('c-rs1_3').value,
-    rs1_4_rain:        document.getElementById('c-rs1_4').value,
-    rs5:  getCheck('c','rs5'),  rs6:  getCheck('c','rs6'),  rs7:  getCheck('c','rs7'),
-    rs8:  getCheck('c','rs8'),  rs9:  getCheck('c','rs9'),  rs10: getCheck('c','rs10'),
-    rs11: getCheck('c','rs11'),
-    rsComments:        document.getElementById('c-rscomments').value,
-    passengersUp:      paxup,
-    passengersDown:    paxdown,
-    fuelLitres:        document.getElementById('c-fuel').value,
-    interruption:      document.getElementById('c-interruption').value,
-    intDuration:       document.getElementById('c-intdur')?.value || '',
-    intReason:         document.getElementById('c-intreason')?.value || '',
-    intDetails:        document.getElementById('c-intdetails')?.value || '',
-    anomaly:           document.getElementById('c-anomaly').value,
-    anomalyDesc:       document.getElementById('c-anomdesc')?.value || '',
-    anomalySeverity:   document.getElementById('c-anomsev')?.value || '',
-    anomalyAction:     document.getElementById('c-anomaction')?.value || '',
-    anomalyFollowUp:   document.getElementById('c-anomfollowup')?.value || '',
-    maintenance:       document.getElementById('c-maintenance').value,
-    maintTask:         document.getElementById('c-mainttask')?.value || '',
-    maintType:         document.getElementById('c-mainttype')?.value || '',
-    maintDesc:         document.getElementById('c-maintdesc')?.value || '',
-    incident:          document.getElementById('c-incident').value,
-    incidentType:      document.getElementById('c-inctype')?.value || '',
-    incidentSeverity:  document.getElementById('c-incsev')?.value || '',
-    incidentDesc:      document.getElementById('c-incdesc')?.value || '',
-    firstAid:          document.getElementById('c-firstaid')?.value || '',
-    reportedMgmt:      document.getElementById('c-reported')?.value || '',
+    dsComments: document.getElementById('c-dscomments').value,
+    rs1_0_weather: document.getElementById('c-rs1_0').value,
+    rs1_1_temp: document.getElementById('c-rs1_1').value,
+    rs1_2_wind: document.getElementById('c-rs1_2').value,
+    rs1_3_dir:  document.getElementById('c-rs1_3').value,
+    rs1_4_rain: document.getElementById('c-rs1_4').value,
+    rs5:getCheck('c','rs5'),rs6:getCheck('c','rs6'),rs7:getCheck('c','rs7'),
+    rs8:getCheck('c','rs8'),rs9:getCheck('c','rs9'),rs10:getCheck('c','rs10'),rs11:getCheck('c','rs11'),
+    rsComments: document.getElementById('c-rscomments').value,
+    passengersUp: paxup, passengersDown: paxdown,
+    fuelLitres: document.getElementById('c-fuel').value,
+    interruption: document.getElementById('c-interruption').value,
+    intDuration: document.getElementById('c-intdur')?.value||'',
+    intReason:   document.getElementById('c-intreason')?.value||'',
+    intDetails:  document.getElementById('c-intdetails')?.value||'',
+    anomaly:     document.getElementById('c-anomaly').value,
+    anomalyDesc: document.getElementById('c-anomdesc')?.value||'',
+    anomalySeverity: document.getElementById('c-anomsev')?.value||'',
+    anomalyAction:   document.getElementById('c-anomaction')?.value||'',
+    anomalyFollowUp: document.getElementById('c-anomfollowup')?.value||'',
+    maintenance: document.getElementById('c-maintenance').value,
+    maintTask:   document.getElementById('c-mainttask')?.value||'',
+    maintType:   document.getElementById('c-mainttype')?.value||'',
+    maintDesc:   document.getElementById('c-maintdesc')?.value||'',
+    incident:    document.getElementById('c-incident').value,
+    incidentType:    document.getElementById('c-inctype')?.value||'',
+    incidentSeverity:document.getElementById('c-incsev')?.value||'',
+    incidentDesc:    document.getElementById('c-incdesc')?.value||'',
+    firstAid:    document.getElementById('c-firstaid')?.value||'',
+    reportedMgmt:document.getElementById('c-reported')?.value||'',
   };
 
   try {
@@ -1731,18 +2104,17 @@ async function submitCloseCheck() {
 }
 
 // ═══════════════════════════════════════════════
-//  OPERATOR MANAGER (inside Amend tab)
+//  OPERATOR MANAGER
 // ═══════════════════════════════════════════════
 function buildOperatorManager() {
   const wrap = document.getElementById('op-manager-list');
   if (!wrap) return;
   if (!operatorCache.length) { wrap.innerHTML = '<div style="font-family:\'DM Mono\',monospace;font-size:11px;color:var(--text3)">No operators loaded.</div>'; return; }
-
   wrap.innerHTML = operatorCache.map((o, i) => `
     <div class="op-row">
       <div class="op-name">${o.name}</div>
       <div class="op-role">${o.role}</div>
-      <button class="op-del" onclick="removeOperator(${o.row || i+2},'${o.name.replace(/'/g,"\\'")}')">Remove</button>
+      <button class="op-del" onclick="removeOperator(${o.row||i+2},'${o.name.replace(/'/g,"\\'")}')">Remove</button>
     </div>`).join('');
 }
 
@@ -1750,7 +2122,6 @@ async function addOperator() {
   const name = document.getElementById('op-new-name').value.trim();
   const role = document.getElementById('op-new-role').value;
   if (!name || !role) { toast('Please enter a name and select a role.', 'error'); return; }
-
   try {
     const res  = await fetch(scriptUrl, { method:'POST', headers:{'Content-Type':'text/plain'}, body: JSON.stringify({ action:'saveOperator', name, role, pin: PIN }) });
     const json = await res.json();
@@ -1773,7 +2144,7 @@ async function removeOperator(row, name) {
 }
 
 // ═══════════════════════════════════════════════
-//  INIT FORMS
+//  INIT
 // ═══════════════════════════════════════════════
 buildCheckRows('start-ds-checks', DS_CHECKS, 's');
 buildCheckRows('start-rs-checks', RS_CHECKS, 's');
@@ -1781,12 +2152,15 @@ buildCheckRows('close-ds-checks', DS_CHECKS, 'c');
 buildCheckRows('close-rs-checks', RS_CHECKS, 'c');
 initFormDates();
 loadOperators();
-
 loadDashboard();
 loadMaintDash();
 
-// Auto-refresh every 5 mins
-setInterval(() => { maintData=null; loadDashboard(); loadMaintDash(); if(maintFullLoaded){maintFullLoaded=false;loadMaintFull();} }, 5*60*1000);
+setInterval(() => {
+  maintData=null;
+  loadDashboard();
+  loadMaintDash();
+  if(maintFullLoaded){maintFullLoaded=false;loadMaintFull();}
+}, 5*60*1000);
 </script>
 </body>
 </html>
